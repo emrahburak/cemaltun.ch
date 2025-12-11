@@ -39,7 +39,7 @@ const Clock = () => {
   }, []);
 
   return (
-    <div className="glass-clock-container scale-75 md:scale-100">
+    <div className="glass-clock-container">
       <div className="glass-effect-wrapper">
         <div className="glass-effect-shadow"></div>
         <div className="glass-clock-face">

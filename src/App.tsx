@@ -47,7 +47,12 @@ function App() {
         {/* --- SAAT VE SU EFEKTİ BİRLEŞİMİ --- */}
         {/* 'relative' class'ı çok önemli, su efekti buna göre hizalanacak */}
         {/* 'w-[350px] h-[350px]' vererek saatin boyutuna sabitliyoruz ki canvas taşmasın */}
-        <div className="clock-wrapper relative w-[262px] h-[262px] md:w-[350px] md:h-[350px]">
+        <div className="clock-wrapper relative 
+        w-[350px] h-[350px]           /* Büyük ekranlarda 350px */
+            max-w-[90vw] max-h-[90vw]     /* Ekran çok daralırsa %90'a kadar küçül */
+            md:w-[350px] md:h-[350px]     /* Sadece md'de 350px olmasını garanti et */
+            scale-[0.75] sm:scale-[0.85] md:scale-100 
+            flex justify-center items-center">
 
           {/* Saat */}
           <Clock />
@@ -58,7 +63,7 @@ function App() {
         </div>
         {/* ----------------------------------- */}
 
-        <div className="mt-8 text-xs font-mono text-gray-400 opacity-70">
+        <div className="mt-8  font-mono text-gray-500 opacity-70">
           COMING SOON
         </div>
 
