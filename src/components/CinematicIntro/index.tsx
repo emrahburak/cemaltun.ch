@@ -14,7 +14,7 @@ const CinematicIntro = ({ trigger }: Props) => {
       // Navbar yerine oturduğunda 5 saniye (5000ms) bekle
       timer = setTimeout(() => {
         setIsVisible(true);
-      }, 5000);
+      }, 1500);
     } else {
       // Navbar yukarı çıkarsa yazıyı hemen gizle
       setIsVisible(false);
