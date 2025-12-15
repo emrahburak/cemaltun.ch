@@ -7,14 +7,19 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "optimizer": "tsx src/scripts/optimizer.ts"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "@tailwindcss/vite": "^4.1.17",
+    "fast-glob": "^3.3.3",
     "gsap": "^3.14.1",
+    "path": "^0.12.7",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-router-dom": "^7.10.1",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
