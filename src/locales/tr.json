@@ -1,0 +1,16 @@
+{
+  "common": {
+    "menu": "MENÜ",
+    "close": "KAPAT"
+  },
+  "navbar": {
+    "home": "Ana Sayfa",
+    "about": "Hakkımda",
+    "works": "Çalışmalar",
+    "contact": "İletişim"
+  },
+  "about": {
+    "title": "Cem Hakkında",
+    "content": "Merhaba, ben İsviçre'nin Zürih şehrinde yaşayan besteci Cem Altun. 1975 yılında Bursa’da, müzik ve folklor öğretmeni Artvinli bir babanın oğlu olarak dünyaya geldim. Çocukluk yıllarım mandolin, flüt, koro, piyano ve bağlama dersleriyle geçen zengin bir müzikal eğitimle şekillendi.\n\n2007 yılında İsviçre’ye yerleşmemin ardından profesyonel hayatım gümrük alanında ilerledi; iki farklı gümrükleme okulunu tamamladıktan sonra Zürih Briefzentrum’da gümrük memuru olarak çalışmaya devam ediyorum. Ancak tüm bu süreç boyunca asıl tutkum olan müzikten hiç kopmadım.\n\nZürih Sanat Üniversitesi’nde (ZHdK) Film, Tiyatro ve Medya için Beste alanında İleri Düzey Çalışma Sertifikası (CAS) programını tamamlayarak anlatı besteciliği konusundaki akademik birikimimi güçlendirdim. Bu kapsamda altı tiyatro oyunu, iki belgesel, iki tanıtım filmi ve bir kısa film için özgün müzikler besteledim; ayrıca çok sayıda reklam projesinde de besteci olarak yer aldım.\n\nÇalışmalarımda klasik ve neoklasik yaklaşımları bir araya getirirken, sinematik piyano ve orkestra düzenlemeleriyle duygu, atmosfer ve dramatik yapıyı öne çıkarıyorum. Amacım, ses aracılığıyla görsel anlatımı derinleştiren, hikâyeyi görünmez bir karakter gibi destekleyen bir müzikal dünya kurmak.\n\nEğer sinematik piyano dokularını, orkestral renkleri veya ifade gücü yüksek enstrümantal müzikleri keşfetmeyi seviyorsanız, doğru yerdesiniz."
+  }
+}
