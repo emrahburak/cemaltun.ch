@@ -60,8 +60,6 @@ const Home = () => {
 
       <div className="relative z-10">
         <Overlay />
-
-        {/* YENİ SIDEBAR: Navbar yerine buraya geldi */}
         <Sidebar />
 
         <div ref={sectionsContainerRef} className="relative">
