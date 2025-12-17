@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { usePageTheme } from "../../hooks/usePageTheme";
 
 // Senin import ettiğin görsel
-import defaultImage from "@/assets/images/webp/cem-altun-04.webp";
+import defaultImage from "@/assets/images/about/webp/cem-altun-about-01.webp";
 
 const About = () => {
   const { t } = useTranslation();

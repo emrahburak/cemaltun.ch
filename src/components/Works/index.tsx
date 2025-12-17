@@ -1,98 +1,61 @@
-import { useRef } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslation } from "react-i18next";
-import { usePageTheme } from "../../hooks/usePageTheme";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const Works = () => {
   const { t } = useTranslation();
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  // Navbar rengini SİYAH yapmak için (Açık zemin)
-  const containerRef = usePageTheme(false);
-
-  const worksData = [
-    { id: "1", title: "Bursa'nın İzleri", year: "2023", desc: "A journey through historical soundscapes." },
-    { id: "2", title: "Zurich Briefzentrum", year: "2022", desc: "Industrial rhythm meets neoclassical piano." },
-    { id: "3", title: "Silent City", year: "2021", desc: "An atmospheric study on urban isolation." },
-    { id: "4", title: "The Last Train", year: "2024", desc: "Emotional cinematic orchestral piece." },
-  ];
-
-  useGSAP(() => {
-    const pinDistance = scrollRef.current ? scrollRef.current.offsetWidth - window.innerWidth : 0;
-
-    gsap.to(scrollRef.current, {
-      x: -pinDistance,
-      ease: "none",
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        pin: true, // Bölümü ekrana sabitler
-        scrub: 1,  // Kaydırma hızına göre animasyonu eşler
-        start: "top top",
-        end: () => `+=${pinDistance}`, // Yatay genişlik kadar dikey scroll mesafesi yaratır
-        invalidateOnRefresh: true,
-      }
-    });
-  }, { scope: sectionRef });
+  // Cem Abi'nin "Best of" Playlist ID'si
+  const playlistId = "7p5QAaOmaMttoBJCTwIE4e";
 
   return (
     <section
-      ref={(el) => {
-        sectionRef.current = el;
-        // containerRef'in içindeki current'a el'i 'any' diyerek paslıyoruz
-        (containerRef as any).current = el;
-      }}
       id="works"
-      className="h-screen w-full overflow-hidden bg-[#f5f5f5]"
+      className="w-full h-screen flex items-center justify-center bg-[#f5f5f5] px-6 md:px-20 overflow-hidden"
     >
+      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
 
-      {/* Yatay Kayan Konteyner */}
-      <div
-        ref={scrollRef}
-        className="h-full flex items-center px-[10vw] gap-[10vw] w-fit"
-      >
-        {/* Başlık Kartı */}
-        <div className="flex-shrink-0 w-[30vw]">
-          <h2 className="text-xs font-manrope font-bold mb-4 tracking-[0.4em] uppercase opacity-40">
-            {t('navbar.works')}
-          </h2>
-          <h3 className="text-6xl font-isidora font-light leading-tight">
-            Selected <br /> Audio <br /> Works
-          </h3>
+        {/* SOL TARAF: Başlık ve Açıklama */}
+        <div className="lg:col-span-5 space-y-8">
+          <div>
+            <h2 className="text-[10px] font-manrope font-bold mb-4 tracking-[0.5em] uppercase opacity-40 text-black">
+              {t('navbar.works')} {/* Works başlığı */}
+            </h2>
+            <h3 className="text-5xl md:text-7xl font-isidora font-light leading-[1.1] tracking-tight text-black text-left">
+              Selected <br />
+              <span className="italic text-black/70 font-normal underline decoration-1 underline-offset-8">Works</span>
+            </h3>
+          </div>
+
+          <p className="font-manrope text-sm md:text-base opacity-60 max-w-sm leading-relaxed border-l border-black/10 pl-6 text-black text-left italic">
+            {t('listen.desc') || "Explore the selected works on Spotify."}
+          </p>
+
+          <div className="pt-4 flex justify-start">
+            <a
+              href={`https://open.spotify.com/playlist/${playlistId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-4 text-[10px] font-manrope font-bold tracking-[0.2em] uppercase text-black"
+            >
+              <span className="w-10 h-[1px] bg-black transition-all duration-500 group-hover:w-16"></span>
+              Open in Spotify
+            </a>
+          </div>
         </div>
 
-        {/* Eser Kartları */}
-        {worksData.map((work) => (
-          <div
-            key={work.id}
-            className="flex-shrink-0 w-[40vw] group cursor-pointer"
-          >
-            <div className="border-l border-black/10 pl-8 transition-all duration-500 group-hover:border-black/40">
-              <span className="text-[10px] font-manrope tracking-widest opacity-40 uppercase">
-                {work.year}
-              </span>
-              <h4 className="text-4xl font-isidora my-4 group-hover:italic transition-all uppercase">
-                {work.title}
-              </h4>
-              <p className="text-sm font-manrope opacity-60 max-w-sm leading-relaxed italic">
-                {work.desc}
-              </p>
+        {/* SAĞ TARAF: Playlist Embed */}
+        <div className="lg:col-span-7 w-full h-[500px] md:h-[650px]">
+          <iframe
+            style={{ borderRadius: "12px" }}
+            src={`https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator&theme=0`}
+            width="100%"
+            height="100%"
+            frameBorder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+            title="Spotify Playlist"
+          ></iframe>
+        </div>
 
-              {/* Listen Butonu */}
-              <button className="mt-8 flex items-center gap-3 text-[10px] font-bold tracking-[0.2em] uppercase">
-                <span className="w-8 h-[1px] bg-black"></span>
-                Listen Story
-              </button>
-            </div>
-          </div>
-        ))}
-
-        {/* Bitiş Boşluğu */}
-        <div className="flex-shrink-0 w-[20vw]"></div>
       </div>
     </section>
   );

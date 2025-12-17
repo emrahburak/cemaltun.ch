@@ -1,4 +1,4 @@
-import defaultImage from "@/assets/images/webp/cem-altun-piano-09.webp";
+import defaultImage from "@/assets/images/piano/webp/cem-altun-piano-09.webp";
 
 const Hero = () => {
   return (
