@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 const Listen = () => {
   const { t } = useTranslation();
 
-  // Senin verdiğin gerçek Album ID
-  const albumId = "0N4XYs6rDrRWTv5HP6wbZh";
+  // Cem Abi'nin oluşturduğu Playlist ID (Temiz ID)
+  const playlistId = import.meta.env.VITE_SPOTIFY_PLAYLIST_ID;
 
   return (
     <section
@@ -31,28 +31,31 @@ const Listen = () => {
 
           <div className="pt-4 flex justify-start">
             <a
-              href={`https://open.spotify.com/album/${albumId}`}
+              // DÜZELTME 1: Linki standart Spotify web linki yaptık
+              href={`https://open.spotify.com/playlist/${playlistId}`}
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center gap-4 text-[10px] font-manrope font-bold tracking-[0.2em] uppercase text-black"
             >
               <span className="w-10 h-[1px] bg-black transition-all duration-500 group-hover:w-16"></span>
-              Spotify
+              Open in Spotify
             </a>
           </div>
         </div>
 
-        {/* SAĞ TARAF: Album Embed (Çalışan Oynatıcı) */}
+        {/* SAĞ TARAF: Playlist Embed */}
         <div className="lg:col-span-7 w-full h-[500px] md:h-[650px]">
           <iframe
             style={{ borderRadius: "12px" }}
-            src={`https://open.spotify.com/embed/album/${albumId}?utm_source=generator&theme=0`}
+            // DÜZELTME 2: Standart Embed URL yapısı (/embed/playlist/)
+            src={`https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator&theme=0`}
             width="100%"
             height="100%"
             frameBorder="0"
+            // allow özellikleri tam, burası doğru
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
             loading="lazy"
-            title="Spotify Album"
+            title="Spotify Playlist"
           ></iframe>
         </div>
 
