@@ -12,7 +12,7 @@ import CinematicIntro from "../components/CinematicIntro";
 import About from "../components/About";
 import Works from "../components/Works";
 import Contact from "../components/Contact";
-import Gallery from "../components/Gallery";
+import GallerySlide from "../components/GallerySlide";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -67,7 +67,7 @@ const Home = () => {
           <section id="intro-scene" className="w-full h-[200vh] bg-transparent pointer-events-none"></section>
           <About />
           <Works />
-          <Gallery />
+          <GallerySlide/>
           <Contact />
         </div>
       </div>
