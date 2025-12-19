@@ -1,0 +1,46 @@
+/* GalleryStyles.css */
+
+/* Pasif slaytlar: Neredeyse tamamen karanlık */
+.slider-slide {
+  opacity: 0.05 !important;
+  /* %5 opaklık - çok karanlık */
+  filter: grayscale(100%) blur(2px);
+  /* İyice belirsizleştirelim */
+  transition:
+    opacity 0.6s ease,
+    filter 0.6s ease,
+    transform 0.6s ease !important;
+}
+
+/* Aktif Slayt: Sahne Işığı */
+.slider-slide.active {
+  opacity: 1 !important;
+  filter: grayscale(0%) blur(0px);
+  /* Net ve renkli */
+  transform: scale(1.02);
+  /* Hafifçe öne çıksın */
+}
+
+/* Caption sadece aktif olanda görünsün */
+.slider-slide .slide-caption {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.5s ease;
+}
+
+.slider-slide.active .slide-caption {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 0.3s;
+}
+
+/* Buton Hover Mantığı */
+.overlay-nav-row:hover:has(.slider-button:hover) .slider-button {
+  opacity: 0.3;
+}
+
+.slider-button:hover {
+  opacity: 1 !important;
+  border-color: white !important;
+  background: rgba(255, 255, 255, 0.05);
+}
