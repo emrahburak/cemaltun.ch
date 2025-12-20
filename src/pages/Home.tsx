@@ -16,6 +16,14 @@ import GallerySlide from "../components/GallerySlide";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
+
+// Görseller
+import g1 from "@/assets/images/gallery/webp/cem-altun-gallery-01.webp";
+import g2 from "@/assets/images/gallery/webp/cem-altun-gallery-02.webp";
+import g3 from "@/assets/images/gallery/webp/cem-altun-gallery-03.webp";
+import g4 from "@/assets/images/gallery/webp/cem-altun-gallery-04.webp";
+import g5 from "@/assets/images/gallery/webp/cem-altun-gallery-05.webp";
+
 const IntroTrigger = () => {
   const ref = usePageTheme(true);
   return <div ref={ref as any} className="w-full h-[200vh] absolute top-0 left-0 -z-10 pointer-events-none" />;
@@ -24,6 +32,7 @@ const IntroTrigger = () => {
 const Home = () => {
   const sectionsContainerRef = useRef<HTMLDivElement>(null);
   const [isNavbarFixed, setIsNavbarFixed] = useState(false);
+  const images = [g1, g2, g3, g4, g5];
 
   useGSAP(() => {
     ScrollTrigger.create({
@@ -67,7 +76,7 @@ const Home = () => {
           <section id="intro-scene" className="w-full h-[200vh] bg-transparent pointer-events-none"></section>
           <About />
           <Works />
-          <GallerySlide/>
+          <GallerySlide images={images} />
           <Contact />
         </div>
       </div>

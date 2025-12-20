@@ -1,0 +1,202 @@
+:root {
+  --color-black: #000;
+  --color-light: #efeeec;
+  --color-neutral-900: #000;
+  --cubic-default: cubic-bezier(0.25, 1, 0.5, 1);
+  --container-padding: 2em;
+}
+
+.main {
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  /* MUTLAKA 100% veya 100vh OLMALI */
+  position: absolute;
+  inset: 0%;
+  overflow: hidden;
+}
+
+.slider-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  /* Slaytları dikeyde ortalar */
+  width: 100%;
+  height: 100%;
+  /* Eğer bu 100% değilse ortalama çalışmaz */
+}
+
+/* Osmo'nun orjinal CSS'i */
+.osmo-gallery-section {
+  background-color: var(--color-black);
+  color: var(--color-light);
+  min-height: 100vh;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  font-size: 1vw;
+  /* Dinamik ölçekleme için kritik */
+}
+
+.overlay {
+  z-index: 2;
+  background-image: linear-gradient(90deg, var(--color-neutral-900) 85%, #0000);
+  width: 37.5em;
+  height: 100%;
+  padding-left: 2em;
+  display: flex;
+  position: absolute;
+  inset: 0% auto 0% 0%;
+  align-items: center;
+  pointer-events: none;
+  /* Arkadaki slider'ı tutabilmek için */
+}
+
+.overlay-inner {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  height: 28.125em;
+  pointer-events: auto;
+}
+
+/* ... Diğer Osmo CSS satırlarını buraya ekle (Senin attığın tüm blok) ... */
+
+/* KRİTİK: Slider'ın başlangıç pozisyonu */
+.slider-list {
+  display: flex;
+  position: relative;
+  padding-left: 37.5em;
+  /* Overlay genişliği kadar boşluk bırakıyoruz */
+  align-items: center;
+}
+
+.slider-slide {
+  flex: none;
+  width: 42.5em;
+  height: 28em;
+  padding-left: 1.25em;
+  padding-right: 1.25em;
+  transition: opacity 0.4s var(--cubic-default);
+  opacity: 0.2;
+
+  /* --- EKLEMEN GEREKENLER --- */
+  position: relative;
+  /* İçindeki resmin buna göre hizalanması için */
+  overflow: hidden;
+  /* Resim eğer büyükse bu kutunun dışına taşmasın diye */
+}
+
+/* Slide içindeki resmin kapsayıcısı (Eğer .tsx içinde bu class varsa) */
+.slide-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5em;
+  /* Osmo'nun o hafif yuvarlak köşeleri */
+  overflow: hidden;
+}
+
+/* RESMİN KENDİSİNE HÜKMETMEK */
+.slider-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* İŞTE SİHİR BURADA: Resim ne boyutta olursa olsun kutuyu doldurur */
+  object-position: center;
+  /* Resmi kutunun içinde ortalar */
+}
+
+.slider-slide.active {
+  opacity: 1;
+  /* Aktif olan */
+}
+
+/* Buton Genel Yapısı */
+.button {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.4em;
+  width: 4.5em;
+  height: 4.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transition:
+    transform 0.475s var(--cubic-default),
+    opacity 0.475s var(--cubic-default);
+  cursor: pointer;
+}
+
+/* Ok İkonu */
+.button-arrow {
+  width: 1.2em;
+  height: 0.9em;
+  fill: currentColor;
+  transition: transform 0.475s var(--cubic-default);
+}
+
+.button-arrow.next {
+  transform: rotate(180deg);
+}
+
+/* Hover Efektleri */
+.overlay-nav-row:hover:has(.button:hover) .button {
+  opacity: 0.4;
+  /* Diğer butonları karart */
+}
+
+.button:hover {
+  transform: scale(0.9);
+  /* Butonu hafif küçült */
+  opacity: 1 !important;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Butonun Dört Köşesindeki Detaylar */
+.button-overlay {
+  position: absolute;
+  inset: -1px;
+  /* Border'ı tam kaplaması için */
+  pointer-events: none;
+  transition: transform 0.475s var(--cubic-default);
+}
+
+.button:hover .button-overlay {
+  transform: scale(1.3);
+  /* Köşeleri dışarı fırlat */
+}
+
+.overlay-corner {
+  position: absolute;
+  width: 0.8em;
+  height: 0.8em;
+  border-top: 1.5px solid #efeeec;
+  border-left: 1.5px solid #efeeec;
+  border-top-left-radius: 0.2em;
+}
+
+/* Köşe Pozisyonları */
+.top-left {
+  top: 0;
+  left: 0;
+}
+
+.top-right {
+  top: 0;
+  right: 0;
+  transform: rotate(90deg);
+}
+
+.bottom-left {
+  bottom: 0;
+  left: 0;
+  transform: rotate(-90deg);
+}
+
+.bottom-right {
+  bottom: 0;
+  right: 0;
+  transform: rotate(180deg);
+}
