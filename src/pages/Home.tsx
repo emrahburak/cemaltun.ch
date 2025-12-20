@@ -22,7 +22,7 @@ import g1 from "@/assets/images/gallery/webp/cem-altun-gallery-01.webp";
 import g2 from "@/assets/images/gallery/webp/cem-altun-gallery-02.webp";
 import g3 from "@/assets/images/gallery/webp/cem-altun-gallery-03.webp";
 import g4 from "@/assets/images/gallery/webp/cem-altun-gallery-04.webp";
-import g5 from "@/assets/images/gallery/webp/cem-altun-gallery-05.webp";
+// import g5 from "@/assets/images/gallery/webp/cem-altun-gallery-05.webp";
 
 const IntroTrigger = () => {
   const ref = usePageTheme(true);
@@ -32,7 +32,7 @@ const IntroTrigger = () => {
 const Home = () => {
   const sectionsContainerRef = useRef<HTMLDivElement>(null);
   const [isNavbarFixed, setIsNavbarFixed] = useState(false);
-  const images = [g1, g2, g3, g4, g5];
+  const images = [g1, g2, g3, g4,];
 
   useGSAP(() => {
     ScrollTrigger.create({
