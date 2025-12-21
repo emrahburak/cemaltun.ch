@@ -1,0 +1,156 @@
+/* MobileGallerySlide.css */
+
+.mobile-gallery-section {
+  background-color: #000;
+  color: #efeeec;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  font-size: 16px;
+  touch-action: pan-y;
+}
+
+/* --- COUNTER --- */
+.mobile-counter {
+  font-family: var(--font-sollarish);
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+  letter-spacing: -0.05em;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 20;
+}
+
+.mobile-counter-divider {
+  width: 1px;
+  height: 1.2rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: rotate(20deg);
+}
+
+/* --- SLIDER LIST --- */
+.mobile-slider-list-wrapper {
+  width: 100%;
+  position: relative;
+  z-index: 10;
+  padding: 2rem 0;
+}
+
+.mobile-slide {
+  flex: 0 0 85vw;
+  /* Resim ekranın %85'ini kaplar */
+  padding: 0 12px;
+  opacity: 0.15;
+  transition: opacity 0.4s ease;
+  will-change: opacity;
+  display: flex;
+  justify-content: center;
+}
+
+.mobile-slide.active {
+  opacity: 1 !important;
+}
+
+.mobile-slide-inner {
+  width: 100%;
+  height: 45vh;
+  border-radius: 0.4rem;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+  background-color: #0a0a0a;
+}
+
+.mobile-slide-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* --- NAVİGASYON (BUTONLAR) --- */
+.mobile-nav-row {
+  display: flex;
+  gap: 4rem;
+  margin-top: 3rem;
+  position: relative;
+  z-index: 100;
+  /* Kesinlikle en üstte */
+  pointer-events: auto !important;
+}
+
+.mobile-button {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.4rem;
+  width: 4.8rem;
+  height: 4.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-button:active {
+  transform: scale(0.92);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.mobile-button-overlay {
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+}
+
+.mobile-corner {
+  position: absolute;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-top: 1.5px solid #efeeec;
+  border-left: 1.5px solid #efeeec;
+  border-top-left-radius: 0.2rem;
+}
+
+/* Köşe Pozisyonları */
+.top-left {
+  top: 0;
+  left: 0;
+}
+
+.top-right {
+  top: 0;
+  right: 0;
+  transform: rotate(90deg);
+}
+
+.bottom-left {
+  bottom: 0;
+  left: 0;
+  transform: rotate(-90deg);
+}
+
+.bottom-right {
+  bottom: 0;
+  right: 0;
+  transform: rotate(180deg);
+}
+
+.mobile-arrow {
+  width: 1.4rem;
+  height: 1rem;
+  fill: currentColor;
+}
+
+.mobile-arrow.next {
+  transform: rotate(180deg);
+}

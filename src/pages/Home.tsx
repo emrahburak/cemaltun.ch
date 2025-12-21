@@ -22,6 +22,7 @@ import g1 from "@/assets/images/gallery/webp/cem-altun-gallery-01.webp";
 import g2 from "@/assets/images/gallery/webp/cem-altun-gallery-02.webp";
 import g3 from "@/assets/images/gallery/webp/cem-altun-gallery-03.webp";
 import g4 from "@/assets/images/gallery/webp/cem-altun-gallery-04.webp";
+import MobileGallerySlide from "../components/MobileGallerySlide";
 // import g5 from "@/assets/images/gallery/webp/cem-altun-gallery-05.webp";
 
 const IntroTrigger = () => {
@@ -76,7 +77,14 @@ const Home = () => {
           <section id="intro-scene" className="w-full h-[200vh] bg-transparent pointer-events-none"></section>
           <About />
           <Works />
-          <GallerySlide images={images} />
+          <div id="gallery">
+            <div className="hidden lg:block">
+              <GallerySlide images={images} />
+            </div>
+            <div className="lg:hidden">
+              <MobileGallerySlide images={images} />
+            </div>
+          </div>
           <Contact />
         </div>
       </div>
