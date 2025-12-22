@@ -1,93 +1,61 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { usePageTheme } from "../hooks/usePageTheme";
 
 import Hero from "../components/Hero";
-import Overlay from "../components/Overlay";
-// NAVBAR yerine SIDEBAR import ediyoruz
 import Sidebar from "../components/Sidebar";
-import CinematicIntro from "../components/CinematicIntro";
 import About from "../components/About";
 import Works from "../components/Works";
 import Contact from "../components/Contact";
 import GallerySlide from "../components/GallerySlide";
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
-
-
-// Görseller
 import g1 from "@/assets/images/gallery/webp/cem-altun-gallery-01.webp";
 import g2 from "@/assets/images/gallery/webp/cem-altun-gallery-02.webp";
 import g3 from "@/assets/images/gallery/webp/cem-altun-gallery-03.webp";
 import g4 from "@/assets/images/gallery/webp/cem-altun-gallery-04.webp";
-import MobileGallerySlide from "../components/MobileGallerySlide";
-// import g5 from "@/assets/images/gallery/webp/cem-altun-gallery-05.webp";
 
-const IntroTrigger = () => {
-  const ref = usePageTheme(true);
-  return <div ref={ref as any} className="w-full h-[200vh] absolute top-0 left-0 -z-10 pointer-events-none" />;
-};
+gsap.registerPlugin(ScrollTrigger);
 
 const Home = () => {
-  const sectionsContainerRef = useRef<HTMLDivElement>(null);
-  const [isNavbarFixed, setIsNavbarFixed] = useState(false);
-  const images = [g1, g2, g3, g4,];
+  const mainRef = useRef<HTMLDivElement>(null);
+  const images = [g1, g2, g3, g4];
+  const themeRef = usePageTheme(true);
 
   useGSAP(() => {
-    ScrollTrigger.create({
-      trigger: "body",
-      start: "100vh top",
-      onEnter: () => setIsNavbarFixed(true),
-      onLeaveBack: () => setIsNavbarFixed(false),
-    });
-
-    if (sectionsContainerRef.current) {
-      const allChildren = gsap.utils.toArray(sectionsContainerRef.current.children) as HTMLElement[];
-      const sections = allChildren.filter(child => child.tagName === "SECTION");
-
-      if (sections.length > 0) {
-        ScrollTrigger.create({
-          trigger: sectionsContainerRef.current,
-          start: "top top",
-          end: "bottom bottom",
-          snap: {
-            snapTo: sections,
-            duration: { min: 0.5, max: 0.8 },
-            delay: 0,
-            ease: "power2.inOut"
-          } as any,
-        });
-      }
-    }
-  }, { scope: sectionsContainerRef });
+    // SNAP MEKANİZMASINI KALDIRDIK 
+    // Bu sayede "About" sayfası kendini yukarı ittirmeye çalışmayacak.
+    // Kullanıcı Hero zoom'u bitirdiğinde doğal bir şekilde aşağı kaymaya devam edecek.
+  }, { scope: mainRef });
 
   return (
-    <div className="relative">
-      <Hero />
-      <CinematicIntro trigger={isNavbarFixed} />
+    <div ref={mainRef} className="relative w-full bg-white">
+      <Sidebar />
 
-      <div className="relative z-10">
-        <Overlay />
-        <Sidebar />
+      <div ref={themeRef as any} className="absolute top-0 left-0 w-full h-screen pointer-events-none -z-10" />
 
-        <div ref={sectionsContainerRef} className="relative">
-          <IntroTrigger />
-          <section id="intro-scene" className="w-full h-[200vh] bg-transparent pointer-events-none"></section>
-          <About />
-          <Works />
-          <div id="gallery">
-            <div className="hidden lg:block">
-              <GallerySlide images={images} />
-            </div>
-            <div className="lg:hidden">
-              <MobileGallerySlide images={images} />
-            </div>
-          </div>
-          <Contact />
-        </div>
-      </div>
+      {/* Hero kendi içindeki zoom ve pinleme mekanizmasını yönetir */}
+      <section id="hero">
+        <Hero />
+      </section>
+
+      {/* Diğer bölümler normal akışta (snap baskısı olmadan) */}
+      <section id="about" className="w-full min-h-screen">
+        <About />
+      </section>
+
+      <section id="works" className="w-full min-h-screen">
+        <Works />
+      </section>
+
+      <section id="gallery" className="w-full min-h-screen">
+        <GallerySlide images={images} />
+      </section>
+
+      <section id="contact" className="w-full min-h-screen">
+        <Contact />
+      </section>
     </div>
   );
 };

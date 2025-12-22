@@ -13,7 +13,7 @@ const Overlay = () => {
       {/* Scroll yapınca yukarı kayıp gidecekler */}
       <div className="relative z-10 flex flex-col items-center text-white drop-shadow-lg px-4">
 
-        <h1 className="text-5xl md:text-7xl font-isidora font-bold tracking-tight mb-4 text-center">
+        <h1 className="text-5xl md:text-7xl font-urbanist font-semibold tracking-tight mb-4 text-center">
           CEM ALTUN
         </h1>
 
