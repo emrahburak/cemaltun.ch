@@ -1,0 +1,27 @@
+/* Mevcut CSS'ine ekle/güncelle */
+
+.mobile-slide-swiper {
+  width: 85vw !important;
+  /* Ekranın %85'ini kaplasın */
+  display: flex;
+  justify-content: center;
+  transition: opacity 0.4s ease;
+  opacity: 0.3;
+  /* Odakta olmayanlar soluk */
+}
+
+/* Aktif (ortadaki) slide'ı parlat */
+.swiper-slide-active.mobile-slide-swiper {
+  opacity: 1;
+}
+
+.mobile-slider-list-wrapper {
+  width: 100%;
+  overflow: visible !important;
+  /* Yanlardaki resimlerin görünmesi için */
+}
+
+.mySwiper {
+  width: 100%;
+  padding: 20px 0;
+}

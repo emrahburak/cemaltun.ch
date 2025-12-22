@@ -1,20 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100..900&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Raleway:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100..900&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Raleway:ital,wght@0,100..900;1,100..900&family=Urbanist:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
 @import "tailwindcss";
 
 /* =========================================
-   YEREL FONT TANIMLAMALARI (@font-face)
+   YEREL FONTLAR (LOCAL FONTS)
    ========================================= */
 
-/* --- 1. ISIDORA --- */
-@font-face {
-  font-family: "Isidora";
-  src: url("./fonts/isidora-font/isidora-regular.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-}
-
-/* --- 2. ROUNDED ELEGANCE --- */
+/* --- 1. ROUNDED ELEGANCE --- */
 @font-face {
   font-family: "Rounded Elegance";
   src: url("./fonts/Rounded-Elegance-font/Fonts/rounded elegance.ttf") format("truetype");
@@ -22,7 +14,7 @@
   font-style: normal;
 }
 
-/* --- 3. BRAGA (Yeni) --- */
+/* --- 2. BRAGA --- */
 @font-face {
   font-family: "Braga";
   src: url("./fonts/braga-3-font/Braga-JR887.ttf") format("truetype");
@@ -30,8 +22,7 @@
   font-style: normal;
 }
 
-/* --- 4. KINCREV AİLESİ (Yeni - Çoklu Stil) --- */
-/* Regular */
+/* --- 3. KINCREV AİLESİ --- */
 @font-face {
   font-family: "Kincrev";
   src: url("./fonts/kincrev-font/Kincrev-L3rPg.otf") format("opentype");
@@ -39,7 +30,6 @@
   font-style: normal;
 }
 
-/* Italic */
 @font-face {
   font-family: "Kincrev";
   src: url("./fonts/kincrev-font/KincrevItalic-PKvPg.otf") format("opentype");
@@ -47,7 +37,6 @@
   font-style: italic;
 }
 
-/* Bold */
 @font-face {
   font-family: "Kincrev";
   src: url("./fonts/kincrev-font/KincrevBold-d9p06.otf") format("opentype");
@@ -55,7 +44,6 @@
   font-style: normal;
 }
 
-/* Bold Italic */
 @font-face {
   font-family: "Kincrev";
   src: url("./fonts/kincrev-font/KincrevBoldItalic-mL5px.otf") format("opentype");
@@ -63,7 +51,7 @@
   font-style: italic;
 }
 
-/* --- 5. KSANA (Yeni) --- */
+/* --- 4. KSANA --- */
 @font-face {
   font-family: "Ksana";
   src: url("./fonts/ksana-font/KsanaRegular-51oaG.otf") format("opentype");
@@ -71,7 +59,7 @@
   font-style: normal;
 }
 
-/* --- 6. SOLLARISH (Yeni) --- */
+/* --- 5. SOLLARISH --- */
 @font-face {
   font-family: "Sollarish";
   src: url("./fonts/sollarish-font/Sollarish-Regular.ttf") format("truetype");
@@ -80,10 +68,11 @@
 }
 
 /* =========================================
-   TAILWIND THEME AYARLARI
+   TAILWIND THEME AYARLARI (v4+)
    ========================================= */
 @theme {
   /* Google Fonts */
+  --font-urbanist: "Urbanist", sans-serif;
   --font-encode: "Encode Sans", sans-serif;
   --font-exo: "Exo 2", sans-serif;
   --font-inter: "Inter", sans-serif;
@@ -93,41 +82,34 @@
   --font-work: "Work Sans", sans-serif;
 
   /* Yerel Fontlar */
-  --font-isidora: "Isidora", sans-serif;
   --font-rounded: "Rounded Elegance", sans-serif;
-
-  /* Yeni Eklenenler */
   --font-braga: "Braga", serif;
-  /* Serif tahmini, modern duruş için */
   --font-kincrev: "Kincrev", sans-serif;
   --font-ksana: "Ksana", sans-serif;
   --font-sollarish: "Sollarish", sans-serif;
 }
 
-/* --- LENS & GLASS EFEKTLERİ --- */
-
-/* Vignette: Kenarlara doğru koyulaşan gölge */
-.bg-radial-vignette {
-  background: radial-gradient(circle at center,
-      transparent 40%,
-      /* Merkez %40 tamamen temiz */
-      rgba(100, 110, 115, 0.2) 80%,
-      /* Geçiş */
-      rgba(50, 60, 70, 0.6) 100%
-      /* En kenarlar koyu */
-    );
+/* BURASI ÇOK KRİTİK */
+html {
+  overflow-y: scroll;
+  /* Kaydırma çubuğu her zaman teknik olarak aktif olsun */
+  scroll-behavior: auto !important;
+  /* GSAP snap ile çakışmaması için */
 }
 
-/* Shine: Cama vuran spot ışığı */
-.bg-gradient-radial-shine {
-  background: radial-gradient(circle at center,
-      rgba(255, 255, 255, 0.9) 0%,
-      rgba(255, 255, 255, 0.2) 40%,
-      transparent 70%);
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  /* height: 100% YERİNE min-height */
+  overflow-x: hidden;
+  background-color: #fff;
+  /* Başlangıç beyazlığı için */
+
+  /* Scrollbar'ı gizle ama fonksiyonunu bozma */
+  scrollbar-width: none;
 }
 
-/* Noise: SVG Tabanlı kumlanma (Değişmedi, aynı kalabilir) */
-.bg-noise {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
-  background-size: 100px 100px;
+body::-webkit-scrollbar {
+  display: none;
 }
