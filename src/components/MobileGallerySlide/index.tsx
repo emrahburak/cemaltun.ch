@@ -1,111 +1,91 @@
-import { useState, useRef } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, EffectCoverflow } from "swiper/modules";
-import type { Swiper as SwiperType } from "swiper";
-import "./MobileGallerySlide.css"
+import { useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+import { useTranslation } from 'react-i18next';
 
-// Swiper Styles
-import "swiper/css";
-
-import "swiper/css/navigation";
-import "swiper/css/effect-coverflow";
-
-import "./MobileGallerySlide.css";
-
-// --- LIGHTBOX ---
-import Lightbox from "yet-another-react-lightbox";
-import "yet-another-react-lightbox/styles.css";
+// Styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import './MobileGallerySlide.css';
 
 export default function MobileGallerySlide({ images }: { images: string[] }) {
+  const [prevEl, setPrevEl] = useState<HTMLButtonElement | null>(null);
+  const [nextEl, setNextEl] = useState<HTMLButtonElement | null>(null);
+  const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [lightboxIndex, setLightboxIndex] = useState(-1);
-  const swiperRef = useRef<SwiperType | null>(null);
 
   return (
-    <section className="mobile-gallery-section">
+    <div className="mobile-gallery-wrapper bg-black w-full min-h-screen flex flex-col justify-center py-12">
 
-      {/* COUNTER */}
-      <div className="mobile-counter">
-        <span className="current-num">{(activeIndex + 1).toString().padStart(2, '0')}</span>
-        <div className="mobile-counter-divider"></div>
-        <span className="total-num opacity-30">{images.length.toString().padStart(2, '0')}</span>
+      {/* --- 1. TITLE (SOL ÜSTTE) --- */}
+      <div className="w-full px-8 mb-4">
+        <h2 className="text-[10px] font-manrope font-bold tracking-[0.5em] uppercase opacity-40 text-white text-left">
+          {t('navbar.gallery')}
+        </h2>
       </div>
 
-      {/* SWIPER SLIDER */}
-      <div className="mobile-slider-list-wrapper">
+      {/* --- 2. COUNTER (ORTADA) --- */}
+      <div className="w-full flex justify-center items-center gap-3 mb-6  text-[1.2rem] tracking-[0.3em] uppercase font-sollarish">
+        <span className="text-white font-medium">
+          {activeIndex + 1 < 10 ? `0${activeIndex + 1}` : activeIndex + 1}
+        </span>
+        <span className="w-8 h-[1px] bg-white/20"></span>
+        <span className="text-white/40">
+          {images.length < 10 ? `0${images.length}` : images.length}
+        </span>
+      </div>
+
+      {/* --- 3. IMAGE AREA (SWIPER) --- */}
+      <div className="w-full px-6">
         <Swiper
-          modules={[Navigation, EffectCoverflow]}
-          onBeforeInit={(swiper) => {
-            swiperRef.current = swiper;
-          }}
-          onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+          slidesPerView={1}
+          spaceBetween={20}
           loop={true}
-          centeredSlides={true}
-          slidesPerView={"auto"}
-          grabCursor={true}
-          speed={600}
-          effect={"coverflow"}
-          coverflowEffect={{
-            rotate: 0,
-            stretch: 0,
-            depth: 100,
-            modifier: 2.5,
-            slideShadows: false,
-          }}
-          className="mySwiper"
+          onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+          navigation={{ prevEl, nextEl }}
+          modules={[Navigation]}
+          className="mySwiper w-full h-[55vh] overflow-visible"
         >
-          {images.map((src, i) => (
-            <SwiperSlide key={i} className="mobile-slide-swiper">
-              <div
-                className="mobile-slide-inner"
-                onClick={() => setLightboxIndex(i)}
-              >
-                <img src={src} alt={`Slide ${i}`} />
-              </div>
+          {images.map((src, index) => (
+            <SwiperSlide key={index} className="relative overflow-hidden rounded-sm">
+              <div className="absolute inset-y-0 left-0 w-16 z-10 pointer-events-none bg-gradient-to-r from-black/80 to-transparent" />
+              <div className="absolute inset-y-0 right-0 w-16 z-10 pointer-events-none bg-gradient-to-l from-black/80 to-transparent" />
+              <img
+                src={src}
+                alt={`Slide ${index}`}
+                className="w-full h-full object-cover select-none"
+              />
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
 
-      {/* BUTONLAR (Senin Tasarımın) */}
-      <div className="mobile-nav-row">
-        <button
-          onClick={() => swiperRef.current?.slidePrev()}
-          className="mobile-button"
-        >
-          <div className="mobile-button-overlay">
-            <div className="mobile-corner top-left"></div>
-            <div className="mobile-corner top-right"></div>
-            <div className="mobile-corner bottom-left"></div>
-            <div className="mobile-corner bottom-right"></div>
+      {/* --- 4. NAVIGASYON BUTONLARI (ORTADA) --- */}
+      <div className="flex flex-row gap-12 mt-12 items-center justify-center relative z-50">
+        <button ref={setPrevEl} className="osmo-button group relative p-4 flex items-center justify-center cursor-pointer">
+          <div className="button-overlay pointer-events-none">
+            <div className="overlay-corner top-left !border-white/40"></div>
+            <div className="overlay-corner top-right !border-white/40"></div>
+            <div className="overlay-corner bottom-left !border-white/40"></div>
+            <div className="overlay-corner bottom-right !border-white/40"></div>
           </div>
-          <svg viewBox="0 0 17 12" className="mobile-arrow">
+          <svg viewBox="0 0 17 12" className="w-6 h-6 fill-white pointer-events-none">
             <path d="M6.28871 12L7.53907 10.9111L3.48697 6.77778H16.5V5.22222H3.48697L7.53907 1.08889L6.28871 0L0.5 6L6.28871 12Z" />
           </svg>
         </button>
 
-        <button
-          onClick={() => swiperRef.current?.slideNext()}
-          className="mobile-button"
-        >
-          <div className="mobile-button-overlay">
-            <div className="mobile-corner top-left"></div>
-            <div className="mobile-corner top-right"></div>
-            <div className="mobile-corner bottom-left"></div>
-            <div className="mobile-corner bottom-right"></div>
+        <button ref={setNextEl} className="osmo-button group relative p-4 flex items-center justify-center cursor-pointer">
+          <div className="button-overlay pointer-events-none">
+            <div className="overlay-corner top-left !border-white/40"></div>
+            <div className="overlay-corner top-right !border-white/40"></div>
+            <div className="overlay-corner bottom-left !border-white/40"></div>
+            <div className="overlay-corner bottom-right !border-white/40"></div>
           </div>
-          <svg viewBox="0 0 17 12" className="mobile-arrow next">
+          <svg viewBox="0 0 17 12" className="w-6 h-6 fill-white rotate-180 pointer-events-none">
             <path d="M6.28871 12L7.53907 10.9111L3.48697 6.77778H16.5V5.22222H3.48697L7.53907 1.08889L6.28871 0L0.5 6L6.28871 12Z" />
           </svg>
         </button>
       </div>
-
-      <Lightbox
-        index={lightboxIndex}
-        open={lightboxIndex >= 0}
-        close={() => setLightboxIndex(-1)}
-        slides={images.map((src) => ({ src }))}
-      />
-    </section>
+    </div>
   );
 }

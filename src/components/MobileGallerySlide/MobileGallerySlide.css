@@ -1,27 +1,106 @@
-/* Mevcut CSS'ine ekle/güncelle */
-
-.mobile-slide-swiper {
-  width: 85vw !important;
-  /* Ekranın %85'ini kaplasın */
-  display: flex;
-  justify-content: center;
-  transition: opacity 0.4s ease;
-  opacity: 0.3;
-  /* Odakta olmayanlar soluk */
-}
-
-/* Aktif (ortadaki) slide'ı parlat */
-.swiper-slide-active.mobile-slide-swiper {
-  opacity: 1;
-}
-
-.mobile-slider-list-wrapper {
-  width: 100%;
-  overflow: visible !important;
-  /* Yanlardaki resimlerin görünmesi için */
-}
-
 .mySwiper {
   width: 100%;
   padding: 20px 0;
+  overflow: visible !important;
+}
+
+swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #444;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 2px;
+  background: #000;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Swiper varsayılan okları gizle */
+.swiper-button-next,
+.swiper-button-prev {
+  display: none !important;
+}
+
+.mobile-gallery-wrapper {
+  overflow: hidden;
+}
+
+.swiper-slide {
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Buton Köşe Tasarımları (Zürich Style - Beyaz Çizgiler) */
+.osmo-button {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+  border: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.button-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.overlay-corner {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-style: solid;
+}
+
+.top-left {
+  top: 0;
+  left: 0;
+  border-width: 1px 0 0 1px;
+}
+
+.top-right {
+  top: 0;
+  right: 0;
+  border-width: 1px 1px 0 0;
+}
+
+.bottom-left {
+  bottom: 0;
+  left: 0;
+  border-width: 0 0 1px 1px;
+}
+
+.bottom-right {
+  bottom: 0;
+  right: 0;
+  border-width: 0 1px 1px 0;
+}
+
+/* Buton Hover Efekti */
+.osmo-button:active {
+  transform: scale(0.9);
+  opacity: 0.6;
 }
