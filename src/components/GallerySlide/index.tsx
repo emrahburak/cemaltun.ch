@@ -1,29 +1,29 @@
-import { useRef } from "react"; // React hook'ları
-import { useTranslation } from "react-i18next"; // Çeviri kancası
+import { useRef, useState } from "react"; // useState eklendi
+import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
 import { useGSAP } from "@gsap/react";
 import { horizontalLoop } from "../../utils/horizontalloop";
 import "./GallerySlider.css";
-import { ScrollTrigger } from "gsap/ScrollTrigger"; // Yeni ekledik
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-
+// Lightbox İthalatları
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
 gsap.registerPlugin(Draggable, ScrollTrigger);
 
 export default function GallerySlider({ images }: { images: string[] }) {
   const mainRef = useRef<HTMLDivElement>(null);
-  const loopRef = useRef<any>(null); // Loop motorunu burada saklayacağız
-
-  // --- YENİ EKLENENLER ---
-  const quoteRef = useRef<HTMLParagraphElement>(null); // Metin için ref
+  const loopRef = useRef<any>(null);
+  const quoteRef = useRef<HTMLParagraphElement>(null);
   const { t } = useTranslation();
   const quoteText = t("gallery.quote");
 
-
+  // --- LIGHTBOX STATE ---
+  const [index, setIndex] = useState(-1); // -1 kapalı, >= 0 ise açık olan resmin indeksi
 
   useGSAP(() => {
-    // Slides dizisini HTMLElement olarak tanımlıyoruz
     const slides = gsap.utils.toArray<HTMLElement>('[data-slider="slide"]');
     const allSteps = mainRef.current?.querySelectorAll<HTMLElement>('[data-slide-count="step"]');
 
@@ -33,16 +33,11 @@ export default function GallerySlider({ images }: { images: string[] }) {
       paused: true,
       draggable: true,
       repeat: -1,
-      // Parametrelerin tiplerini buraya ekledik:
       onChange: (el: HTMLElement, index: number) => {
-        // 1. Işık Kontrolü (CSS Class yerine doğrudan GSAP ile yapıyoruz)
-        // Bu sayede 1. resimdeki o gecikmeli shadow sorunu bitiyor
         gsap.to(slides, { opacity: 0.2, duration: 0.3, ease: "power2.inOut" });
         gsap.to(el, { opacity: 1, duration: 0.3, ease: "power2.inOut" });
-
         el.classList.add("active");
 
-        // 2. Sayacı hareket ettiren kısım
         if (allSteps) {
           gsap.to(allSteps, {
             yPercent: -100 * index,
@@ -54,19 +49,12 @@ export default function GallerySlider({ images }: { images: string[] }) {
       }
     });
 
-
     loopRef.current = loop;
 
-    // --- 2. SADECE İLK GÖRÜNÜMDE ÇALIŞAN SPLIT TEXT ---
     if (quoteRef.current) {
       const chars = quoteRef.current.children;
-
       gsap.fromTo(chars,
-        {
-          opacity: 0,
-          y: 10,
-          filter: "blur(5px)"
-        },
+        { opacity: 0, y: 10, filter: "blur(5px)" },
         {
           opacity: 1,
           y: 0,
@@ -76,8 +64,8 @@ export default function GallerySlider({ images }: { images: string[] }) {
           stagger: 0.02,
           scrollTrigger: {
             trigger: quoteRef.current,
-            start: "top 95%", // Sayfa kayarken alttan %5 göründüğü an başla
-            once: true, // KRİTİK: Sadece bir kez çalışır, bir daha asla tetiklenmez
+            start: "top 95%",
+            once: true,
             toggleActions: "play none none none"
           }
         }
@@ -85,8 +73,6 @@ export default function GallerySlider({ images }: { images: string[] }) {
     }
   }, { scope: mainRef, dependencies: [images] });
 
-
-  // --- BUTON FONKSİYONLARI ---
   const handleNext = () => {
     if (loopRef.current) loopRef.current.next({ duration: 0.7, ease: "power3.inOut" });
   };
@@ -98,10 +84,24 @@ export default function GallerySlider({ images }: { images: string[] }) {
   return (
     <div ref={mainRef} className="osmo-gallery-section">
 
-      {/* OVERLAY LAYER (Tıklamaları engellememesi için pointer-events-none) */}
+
+      {/* LIGHTBOX BİLEŞENİ */}
+      <Lightbox
+        index={index}
+        open={index >= 0}
+        close={() => setIndex(-1)}
+        slides={images.map((src) => ({ src }))}
+      />
+      <div className="absolute top-12 left-12 pointer-events-none z-10">
+        <h2 className="text-lg font-manrope font-bold tracking-[0.5em] uppercase opacity-60 text-white">
+          {t('navbar.gallery')}
+        </h2>
+      </div>
+
+
+      {/* OVERLAY LAYER */}
       <div className="overlay pointer-events-none">
         <div className="overlay-inner flex flex-col justify-between h-[28.125em] pointer-events-auto">
-
           {/* Sayı Counter */}
           <div className="overlay-count-row">
             <div className="count-column">
@@ -120,33 +120,23 @@ export default function GallerySlider({ images }: { images: string[] }) {
           </div>
 
           {/* QUOTE BÖLÜMÜ */}
-          <div className="flex flex-col items-start max-w-[20em]"> {/* Genişliği biraz artırdık ki kelimeler rahat sığsın */}
+          <div className="flex flex-col items-start max-w-[20em]">
             <div
               ref={quoteRef}
               className="font-sollarish text-[0.7em] uppercase leading-relaxed tracking-[0.15em] italic text-white/90"
             >
-              {/* Önce metni virgüllere göre bölüyoruz */}
               {quoteText.split("").map((char, index) => (
                 <span key={index} className="inline-flex flex-wrap">
-                  <span className="inline-block whitespace-pre">
-                    {char}
-                  </span>
-                  {/* Eğer karakter virgül ise, tam genişlikte gizli bir blok ekleyerek alt satıra zorla */}
+                  <span className="inline-block whitespace-pre">{char}</span>
                   {char === "," && <div className="w-full h-0 pointer-events-none" />}
                 </span>
               ))}
             </div>
           </div>
 
-          {/* NAVIGASYON (Tıklama Garantili Butonlar) */}
+          {/* NAVIGASYON */}
           <div className="overlay-nav-row flex flex-row gap-8 items-center">
-
-            {/* Prev Buton */}
-            <button
-              onClick={handlePrev}
-              className="button group"
-              aria-label="Previous Slide"
-            >
+            <button onClick={handlePrev} className="button group" aria-label="Previous Slide">
               <div className="button-overlay">
                 <div className="overlay-corner top-left"></div>
                 <div className="overlay-corner top-right"></div>
@@ -158,12 +148,7 @@ export default function GallerySlider({ images }: { images: string[] }) {
               </svg>
             </button>
 
-            {/* Next Buton */}
-            <button
-              onClick={handleNext}
-              className="button group"
-              aria-label="Next Slide"
-            >
+            <button onClick={handleNext} className="button group" aria-label="Next Slide">
               <div className="button-overlay">
                 <div className="overlay-corner top-left"></div>
                 <div className="overlay-corner top-right"></div>
@@ -174,7 +159,6 @@ export default function GallerySlider({ images }: { images: string[] }) {
                 <path d="M6.28871 12L7.53907 10.9111L3.48697 6.77778H16.5V5.22222H3.48697L7.53907 1.08889L6.28871 0L0.5 6L6.28871 12Z" />
               </svg>
             </button>
-
           </div>
         </div>
       </div>
@@ -183,30 +167,27 @@ export default function GallerySlider({ images }: { images: string[] }) {
       <div className="main">
         <div className="slider-wrap">
           <div data-slider="list" className="slider-list">
-
             {images.map((src, i) => (
               <div
                 key={i}
                 data-slider="slide"
                 className={`slider-slide ${i === 0 ? 'active' : ''}`}
+                onClick={() => setIndex(i)} // Tıklanınca ilgili indeksi açar
+                style={{ cursor: 'pointer' }} // UX için imleç değişimi
               >
                 <div className="slide-inner group">
                   <img
                     src={src}
                     alt={`Slide ${i}`}
-                    className="w-full h-full object-cover select-none pointer-events-none"
+                    className="w-full h-full object-cover select-none" // pointer-events-none kaldırıldı ki tıklama yakalansın
                   />
-
-                  {/* EKSİK OLAN KISIM BURASIYDI, GERİ GELDİ: */}
                   <div className="slide-caption">
                     <div className="caption-dot"></div>
                     <p className="caption">Nº00{i + 1}</p>
                   </div>
-
                 </div>
               </div>
             ))}
-
           </div>
         </div>
       </div>

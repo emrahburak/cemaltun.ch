@@ -67,7 +67,7 @@ const Hero = () => {
       <div className="absolute inset-0 z-50 pointer-events-none flex items-center justify-center px-20 md:px-40">
         <div
           ref={spectrumRef}
-          className="h-[2px] bg-black/60 w-0 origin-left"
+          className="h-[1px] bg-black/60 w-0 origin-left"
         />
       </div>
 

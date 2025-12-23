@@ -10,6 +10,7 @@ import About from "../components/About";
 import Works from "../components/Works";
 import Contact from "../components/Contact";
 import GallerySlide from "../components/GallerySlide";
+import MobileGallerySlide from "../components/MobileGallerySlide";
 
 import g1 from "@/assets/images/gallery/webp/cem-altun-gallery-01.webp";
 import g2 from "@/assets/images/gallery/webp/cem-altun-gallery-02.webp";
@@ -50,7 +51,12 @@ const Home = () => {
       </section>
 
       <section id="gallery" className="w-full min-h-screen">
-        <GallerySlide images={images} />
+        <div className="hidden lg:block">
+          <GallerySlide images={images} />
+        </div>
+        <div className="lg:hidden">
+          <MobileGallerySlide images={images} />
+        </div>
       </section>
 
       <section id="contact" className="w-full min-h-screen">
