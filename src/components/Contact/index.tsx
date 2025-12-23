@@ -1,78 +1,126 @@
+import { useRef } from "react";
 import { useTranslation } from "react-i18next";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
   const { t } = useTranslation();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const emailRef = useRef<HTMLAnchorElement>(null);
+  const locationRef = useRef<HTMLParagraphElement>(null);
 
-  const email = "info@cemaltun.com";
+  const email = "info@cemaltun.ch";
+  const locationText = t('contact.location');
 
-  // Cem Abi'nin gerçek verileriyle oluşturulan liste
   const links = [
-    {
-      name: "Instagram",
-      url: "https://www.instagram.com/cem_altun/"
-    },
-    {
-      name: "Facebook",
-      url: "https://www.facebook.com/sanalozan/"
-    },
-    {
-      name: "Spotify",
-      // Buraya Sanatçı Profili linkini koyuyoruz (daha önce bulduğumuz Artist ID)
-      url: "https://open.spotify.com/artist/11iL36m7FZC8toXhnY3Qzj"
-    },
-    {
-      // Arkadaşının yaptığı siteyi domain adıyla eklemek en şık duranıdır
-      name: "cemaltun.com.tr",
-      url: "https://cemaltun.com.tr/"
-    }
+    { name: "Instagram", url: "https://www.instagram.com/cem_altun/" },
+    { name: "Facebook", url: "https://www.facebook.com/sanalozan/" },
+    { name: "Spotify", url: "https://open.spotify.com/artist/0" }, // Örnek URL
+    { name: "cemaltun.com.tr", url: "https://cemaltun.com.tr/" }
   ];
+
+  useGSAP(() => {
+    // --- 1. EMAIL ANIMASYONU (Harf Harf) ---
+    const emailChars = emailRef.current?.querySelectorAll(".char");
+    if (emailChars) {
+      gsap.fromTo(emailChars,
+        { opacity: 0, y: 40, filter: "blur(10px)" },
+        {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 1.2,
+          ease: "expo.out",
+          stagger: 0.02,
+          scrollTrigger: {
+            trigger: emailRef.current,
+            start: "top 90%",
+            toggleActions: "play none none none"
+          }
+        }
+      );
+    }
+
+    // --- 2. LOCATION ANIMASYONU ---
+    const locationChars = locationRef.current?.querySelectorAll(".char");
+    if (locationChars) {
+      gsap.fromTo(locationChars,
+        { opacity: 0, x: 10, filter: "blur(5px)" },
+        {
+          opacity: 0.5,
+          x: 0,
+          filter: "blur(0px)",
+          duration: 1,
+          ease: "power3.out",
+          stagger: 0.01,
+          scrollTrigger: {
+            trigger: locationRef.current,
+            start: "top 95%",
+            toggleActions: "play none none none"
+          }
+        }
+      );
+    }
+  }, { scope: containerRef });
 
   return (
     <section
+      ref={containerRef}
       id="contact"
       className="w-full h-screen flex flex-col justify-between bg-[#f5f5f5] px-6 py-20 md:px-20 md:py-32 overflow-hidden"
     >
-      {/* ÜST KISIM: Başlık ve Büyük E-posta */}
+      {/* ÜST KISIM */}
       <div className="flex flex-col space-y-8 mt-10 md:mt-20">
         <h2 className="text-[10px] font-manrope font-bold tracking-[0.5em] uppercase opacity-40 text-black">
-          {t('common.contact') || 'CONTACT'}
+          {t('navbar.contact') || 'CONTACT'}
         </h2>
 
         <a
+          ref={emailRef}
           href={`mailto:${email}`}
-          className="block text-4xl sm:text-6xl md:text-[7vw] font-isidora font-light tracking-tight text-black hover:italic hover:opacity-70 transition-all duration-500 ease-out leading-none break-all md:break-normal"
+          className="block text-3xl sm:text-6xl md:text-[7.5vw] font-urbanist font-light tracking-tighter text-black hover:italic hover:opacity-70 transition-all duration-700 ease-out leading-none break-all md:break-normal"
         >
-          {email}
+          {email.split("").map((char, i) => (
+            <span key={i} className="char inline-block whitespace-pre">
+              {char}
+            </span>
+          ))}
         </a>
 
-        {/* İsviçre ve Türkiye Bayraklarına atıf - Lokasyon Bilgisi */}
-        <p className="text-sm font-manrope opacity-50 pl-1 mt-4 text-black">
-          Based in Switzerland & Turkey
+        <p ref={locationRef} className="font-manrope opacity-50 pl-1 mt-4 text-black text-lg tracking-tight">
+          {locationText.split("").map((char, i) => (
+            <span key={i} className="char inline-block whitespace-pre">
+              {char}
+            </span>
+          ))}
         </p>
       </div>
 
-      {/* ALT KISIM: Linkler ve Copyright */}
-      <div className="flex flex-col md:flex-row justify-between items-end gap-10 border-t border-black/10 pt-10">
+      {/* ALT KISIM (Linkler ve Copyright) */}
+      <div className="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-10 border-t border-black/10 pt-10">
 
-        {/* Linkler Listesi */}
-        <div className="flex flex-wrap gap-x-8 gap-y-4">
+        {/* Linkler Listesi - Mobilde ve Tablette merkezde, Desktopta solda */}
+        <div className="flex flex-wrap justify-center lg:justify-start gap-x-8 gap-y-4">
           {links.map((link) => (
             <a
               key={link.name}
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[10px] font-manrope font-bold tracking-[0.25em] uppercase text-black opacity-40 hover:opacity-100 transition-opacity duration-300"
+              className="text-[0.6rem] font-manrope font-bold tracking-[0.25em] uppercase text-black opacity-40 hover:opacity-100 transition-opacity duration-300"
             >
               {link.name}
             </a>
           ))}
         </div>
 
-        {/* Copyright */}
-        <div className="text-[9px] font-manrope opacity-30 tracking-[0.2em] uppercase text-black text-right leading-relaxed">
+        {/* Copyright - Mobilde ve Tablette merkezde, Desktopta sağda */}
+        <div className="text-[0.6rem] font-manrope opacity-30 tracking-[0.2em] uppercase text-black text-center lg:text-right leading-relaxed">
           © {new Date().getFullYear()} Cem Altun. <br />
-          Composer / Film, Theater & Media.
+          {t('contact.copyright')}
         </div>
       </div>
     </section>
