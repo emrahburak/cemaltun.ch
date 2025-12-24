@@ -74,7 +74,7 @@ const Contact = () => {
     >
       {/* ÜST KISIM */}
       <div className="flex flex-col space-y-8 mt-10 md:mt-20">
-        <h2 className="text-[10px] font-manrope font-bold tracking-[0.5em] uppercase opacity-40 text-black">
+        <h2 className="block md:hidden text-[10px] font-manrope font-bold tracking-[0.5em] uppercase opacity-40 text-black">
           {t('navbar.contact') || 'CONTACT'}
         </h2>
 
