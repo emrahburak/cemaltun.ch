@@ -92,12 +92,6 @@ export default function GallerySlider({ images }: { images: string[] }) {
         close={() => setIndex(-1)}
         slides={images.map((src) => ({ src }))}
       />
-      <div className="absolute top-12 left-12 pointer-events-none z-10">
-        <h2 className="text-lg font-manrope font-bold tracking-[0.5em] uppercase opacity-60 text-white">
-          {t('navbar.gallery')}
-        </h2>
-      </div>
-
 
       {/* OVERLAY LAYER */}
       <div className="overlay pointer-events-none">

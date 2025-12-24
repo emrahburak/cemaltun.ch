@@ -11,7 +11,7 @@ const Sidebar = () => {
   const menuItemsRef = useRef<HTMLUListElement>(null);
 
   // Diller
-  const availableLanguages = ['en', 'de'];
+  const availableLanguages = ['en', 'de', 'tr'];
 
   // GSAP Animasyonu: Menü açılıp kapanma mantığı
   useEffect(() => {
@@ -69,7 +69,7 @@ const Sidebar = () => {
         {/* Menü Linkleri */}
         <nav className="mt-20">
           <ul ref={menuItemsRef} className="space-y-8">
-            {['home', 'about', 'works', 'contact'].map((item) => (
+            {['home', 'about', 'works', 'gallery', 'contact'].map((item) => (
               <li key={item} className="overflow-hidden">
                 <a
                   href={`#${item}`}
@@ -84,20 +84,20 @@ const Sidebar = () => {
         </nav>
 
         {/* Alt Kısım: Dil Seçici ve Footer */}
-        <div className="border-t border-white/10 pt-10">
-          <div className="flex gap-4 mb-6 text-sm font-manrope tracking-widest uppercase">
+        <div className="border-t border-white/20 pt-10">
+          <div className="flex gap-4 mb-6 text-lg font-manrope tracking-widest uppercase">
             {availableLanguages.map((lng) => (
               <button
                 key={lng}
                 onClick={() => i18n.changeLanguage(lng)}
-                className={`${i18n.language === lng ? "opacity-100 font-bold" : "opacity-40"}`}
+                className={`${i18n.language === lng ? "opacity-100 font-bold" : "opacity-50"}`}
               >
                 {lng}
               </button>
             ))}
           </div>
-          <p className="text-[10px] opacity-30 tracking-[0.3em] uppercase">
-            © 2024 Cem Altun
+          <p className="text-[10px] opacity-60 tracking-[0.3em] uppercase">
+            © 2025 Cem Altun
           </p>
         </div>
       </div>

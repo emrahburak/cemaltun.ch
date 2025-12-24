@@ -1,4 +1,8 @@
 {
+  "metadata": {
+    "title": "Cem Altun | Komponist & Sounddesigner - Zürich",
+    "description": "Offizielle Website von Cem Altun. Komponist für Film, Theater und Medien in Zürich. Spezialisiert auf Filmmusik und Orchestrierung."
+  },
   "common": {
     "menu": "MENÜ",
     "close": "SCHLIESSEN"
@@ -13,6 +17,12 @@
   "about": {
     "title": "Über Cem",
     "content": "Hallo, ich bin der in Zürich, Schweiz, lebende Komponist Cem Altun. Ich wurde 1975 in Bursa als Sohn eines Musik- und Folklorelehrers aus Artvin geboren. Meine Kindheit wurde durch eine vielseitige musikalische Ausbildung geprägt, die Unterricht in Mandoline, Flöte, Chor, Klavier und Bağlama umfasste.\n\nNachdem ich mich 2007 in der Schweiz niedergelassen hatte, entwickelte sich mein beruflicher Werdegang im Zollwesen. Nach Abschluss zweier verschiedener Zollschulen arbeite ich weiterhin als Zollbeamter im Briefzentrum Zürich. Doch während dieser ganzen Zeit habe ich meine wahre Leidenschaft, die Musik, nie aus den Augen verloren.\n\nIch habe meinen akademischen Hintergrund in narrativer Komposition vertieft, indem ich das Certificate of Advanced Studies (CAS) in Komposition für Film, Theater und Medien an der Zürcher Hochschule der Künste (ZHdK) absolvierte. In diesem Rahmen habe ich Originalmusik für sechs Theaterstücke, zwei Dokumentarfilme, zwei Werbefilme und einen Kurzfilm komponiert; darüber hinaus war ich als Komponist an zahlreichen Werbeprojekten beteiligt.\n\nIn meinen Arbeiten verbinde ich klassische und neoklassische Ansätze und hebe durch filmische Klavier- und Orchesterarrangements Emotionen, Atmosphäre und dramatische Struktur hervor. Mein Ziel ist es, eine musikalische Welt zu schaffen, die durch Klang die visuelle Erzählung vertieft und die Geschichte wie ein unsichtbarer Charakter unterstützt.\n\nWenn Sie filmische Klaviertexturen, orchestrale Farben oder ausdrucksstarke Instrumentalmusik schätzen, sind Sie hier genau richtig."
+  },
+  "works": {
+    "selected": "Ausgewählte",
+    "title": "Werke",
+    "desc": "Eine kuratierte Sammlung von Klangwelten, komponiert für Kino, Theater und digitale Medien. Eine Reise durch die Essenz des Klangs.",
+    "open_spotify": "Auf Spotify öffnen"
   },
   "gallery": {
     "quote": "Jeder menschliche Moment verwandelt sich früher oder später in eine Melodie.",
