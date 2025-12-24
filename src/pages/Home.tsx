@@ -2,7 +2,6 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { usePageTheme } from "../hooks/usePageTheme";
 
 import Hero from "../components/Hero";
 import Sidebar from "../components/Sidebar";
@@ -22,7 +21,6 @@ gsap.registerPlugin(ScrollTrigger);
 const Home = () => {
   const mainRef = useRef<HTMLDivElement>(null);
   const images = [g1, g2, g3, g4];
-  const themeRef = usePageTheme(true);
 
   useGSAP(() => {
     // SNAP MEKANİZMASINI KALDIRDIK 
@@ -34,7 +32,7 @@ const Home = () => {
     <div ref={mainRef} className="relative w-full bg-white">
       <Sidebar />
 
-      <div ref={themeRef as any} className="absolute top-0 left-0 w-full h-screen pointer-events-none -z-10" />
+      <div className="absolute top-0 left-0 w-full h-screen pointer-events-none -z-10" />
 
       {/* Hero kendi içindeki zoom ve pinleme mekanizmasını yönetir */}
       <section id="hero">
