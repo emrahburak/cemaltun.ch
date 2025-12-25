@@ -10,7 +10,6 @@ import "./GallerySlider.css";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
-// Stacked yapı için prop tanımı
 interface GalleryProps {
   images: string[];
   active?: boolean;
@@ -21,21 +20,22 @@ gsap.registerPlugin(Draggable);
 export default function GallerySlider({ images, active }: GalleryProps) {
   const mainRef = useRef<HTMLDivElement>(null);
   const loopRef = useRef<any>(null);
-  const quoteRef = useRef<HTMLDivElement>(null); // Alıntı sarmalayıcısı
+  const quoteRef = useRef<HTMLDivElement>(null);
   const quoteTlRef = useRef<gsap.core.Timeline | null>(null);
 
   const { t } = useTranslation();
-  const quoteText = t("gallery.quote");
+  const quoteText = t("gallery.quote"); // Dil değişimini takip eden metin
 
   const [index, setIndex] = useState(-1);
 
+  // --- 1. SLIDER VE ANİMASYON MANTIĞI ---
   useGSAP(() => {
     const slides = gsap.utils.toArray<HTMLElement>('[data-slider="slide"]');
     const allSteps = mainRef.current?.querySelectorAll<HTMLElement>('[data-slide-count="step"]');
 
     if (slides.length === 0) return;
 
-    // 1. SLIDER LOOP MANTIĞI (Aynen Korundu)
+    // Yatay Loop Mantığı
     const loop = horizontalLoop(slides, {
       paused: true,
       draggable: true,
@@ -58,24 +58,34 @@ export default function GallerySlider({ images, active }: GalleryProps) {
 
     loopRef.current = loop;
 
-    // 2. QUOTE (ALINTI) ANİMASYONU - BLOK BAZLI
+    // 2. BLOK BAZLI ALINTI (QUOTE) ANİMASYONU
     if (quoteRef.current) {
-      quoteTlRef.current = gsap.timeline({ paused: true })
-        .fromTo(quoteRef.current,
-          { opacity: 0, y: 20, filter: "blur(15px)" },
-          {
-            opacity: 1,
-            y: 0,
-            filter: "blur(0px)",
-            duration: 1.5,
-            ease: "expo.out",
-            clearProps: "filter"
-          }
-        );
-    }
-  }, { scope: mainRef, dependencies: [images] });
+      // Her metin değiştiğinde (dependencies sayesinde) timeline kendini yeniler
+      const tl = gsap.timeline({ paused: true });
 
-  // 3. TETİKLEME
+      tl.fromTo(quoteRef.current,
+        { opacity: 0, y: 15, filter: "blur(10px)" },
+        {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 1.2,
+          ease: "expo.out",
+          clearProps: "all" // Animasyon bitince stilleri temizler, çakışmayı önler
+        }
+      );
+
+      quoteTlRef.current = tl;
+
+      // Eğer sayfa şu an aktifse ve dil değiştiyse animasyonu oynat
+      if (active) tl.play();
+    }
+  }, {
+    scope: mainRef,
+    dependencies: [images, quoteText] // KRİTİK: quoteText değiştiğinde (dil değişince) tetiklenir
+  });
+
+  // --- 3. AKTİF SAYFA TETİKLEME ---
   useEffect(() => {
     if (active) {
       quoteTlRef.current?.play();
@@ -104,7 +114,7 @@ export default function GallerySlider({ images, active }: GalleryProps) {
       <div className="overlay pointer-events-none">
         <div className="overlay-inner flex flex-col justify-between h-[28.125em] pointer-events-auto">
 
-          {/* Sayı Counter */}
+          {/* SAYAÇ BÖLÜMÜ */}
           <div className="overlay-count-row">
             <div className="count-column">
               <div className="count-column-inner">
@@ -121,7 +131,7 @@ export default function GallerySlider({ images, active }: GalleryProps) {
             </div>
           </div>
 
-          {/* QUOTE BÖLÜMÜ - ARTIK TEMİZ VE TEK PARÇA */}
+          {/* ALINTI (QUOTE) BÖLÜMÜ - ARTIK BLOK BAZLI */}
           <div className="flex flex-col items-start max-w-[20em]">
             <div
               ref={quoteRef}
@@ -131,7 +141,7 @@ export default function GallerySlider({ images, active }: GalleryProps) {
             </div>
           </div>
 
-          {/* NAVIGASYON */}
+          {/* NAVİGASYON OKLARI */}
           <div className="overlay-nav-row flex flex-row gap-8 items-center">
             <button onClick={handlePrev} className="button group" aria-label="Previous Slide">
               <div className="button-overlay">
@@ -160,6 +170,7 @@ export default function GallerySlider({ images, active }: GalleryProps) {
         </div>
       </div>
 
+      {/* SLIDER LİSTESİ */}
       <div className="main">
         <div className="slider-wrap">
           <div data-slider="list" className="slider-list">
