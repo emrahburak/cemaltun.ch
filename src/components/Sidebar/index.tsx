@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom"; // Link bileşenini ekledik
+import { Link, useLocation } from "react-router-dom"; // Link ve location eklendi
 import gsap from "gsap";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { t, i18n } = useTranslation();
+  const location = useLocation(); // Mevcut sayfayı takip etmek için
 
   const sidebarRef = useRef(null);
   const overlayRef = useRef(null);
@@ -13,6 +14,16 @@ const Sidebar = () => {
 
   const availableLanguages = ['en', 'de', 'tr'];
 
+  // Navigasyon Linkleri - Tek bir yerden yönetim
+  const navLinks = [
+    { id: 'home', path: '/' },
+    { id: 'about', path: '/#about' },
+    { id: 'works', path: '/#works' },
+    { id: 'gallery', path: '/#gallery' },
+    { id: 'contact', path: '/#contact' },
+  ];
+
+  // GSAP Animasyon Bloğu (Dokunulmadı)
   useEffect(() => {
     if (isOpen) {
       gsap.to(overlayRef.current, { opacity: 1, duration: 0.5, pointerEvents: "auto" });
@@ -37,6 +48,7 @@ const Sidebar = () => {
 
   return (
     <>
+      {/* 1. TRIGGER BUTTON */}
       <button
         onClick={toggleMenu}
         className="fixed top-10 right-10 z-[100] font-manrope font-bold text-sm tracking-[0.2em] uppercase transition-all duration-300 mix-blend-difference text-white"
@@ -44,47 +56,51 @@ const Sidebar = () => {
         {isOpen ? `[ ${t('common.close') || 'CLOSE'} ]` : `[ ${t('common.menu') || 'MENU'} ]`}
       </button>
 
+      {/* 2. OVERLAY */}
       <div
         ref={overlayRef}
         onClick={toggleMenu}
         className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[80] opacity-0 pointer-events-none"
       />
 
+      {/* 3. SIDEBAR PANEL */}
       <div
         ref={sidebarRef}
         className="fixed top-0 right-0 h-full z-[90] bg-[#1a1a1a] text-white shadow-2xl translate-x-full
                    w-full md:w-1/3 flex flex-col justify-between p-12 md:p-20"
       >
+        {/* Menü Linkleri */}
         <nav className="mt-20">
           <ul ref={menuItemsRef} className="space-y-8">
-            {['home', 'about', 'works', 'gallery', 'contact'].map((item) => (
-              <li key={item} className="overflow-hidden">
-                {/* TEKNİK DEĞİŞİKLİK: Link bileşeni ve '/' kullanımı */}
+            {navLinks.map((link) => (
+              <li key={link.id} className="overflow-hidden">
                 <Link
-                  to={item === 'home' ? '/' : `/#${item}`}
+                  to={link.path}
                   onClick={() => setIsOpen(false)}
-                  className="text-4xl md:text-5xl font-isidora font-light hover:italic transition-all duration-300 block origin-left capitalize"
+                  className={`text-4xl md:text-5xl font-isidora font-light hover:italic transition-all duration-300 block origin-left capitalize
+                    ${location.hash === `#${link.id}` ? "italic opacity-100" : "opacity-70 hover:opacity-100"}`}
                 >
-                  {t(`navbar.${item}`)}
+                  {t(`navbar.${link.id}`)}
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
 
+        {/* Alt Kısım: Dil Seçici ve Footer */}
         <div className="border-t border-white/20 pt-10">
           <div className="flex gap-4 mb-6 text-lg font-manrope tracking-widest uppercase">
             {availableLanguages.map((lng) => (
               <button
                 key={lng}
                 onClick={() => i18n.changeLanguage(lng)}
-                className={`${i18n.language === lng ? "opacity-100 font-bold" : "opacity-50"}`}
+                className={`transition-opacity duration-300 ${i18n.language === lng ? "opacity-100 font-bold" : "opacity-40 hover:opacity-100"}`}
               >
                 {lng}
               </button>
             ))}
           </div>
-          <p className="text-[10px] opacity-60 tracking-[0.3em] uppercase">
+          <p className="text-[10px] opacity-40 tracking-[0.3em] uppercase">
             © {new Date().getFullYear()} Cem Altun
           </p>
         </div>
