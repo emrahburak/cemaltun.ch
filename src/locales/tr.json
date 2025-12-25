@@ -36,5 +36,28 @@
   "contact": {
     "location": "İsviçre & Türkiye merkezli",
     "copyright": "Besteci / Film, Tiyatro & Medya."
+  },
+  "privacy": {
+    "meta_title": "Gizlilik Politikası | Cem Altun",
+    "title": "Gizlilik Politikası",
+    "last_updated": "Son Güncelleme",
+    "sections": {
+      "general": {
+        "title": "1. Genel Bakış",
+        "content": "Cem Altun ('Biz') olarak, kişisel verilerinizin güvenliğine ve gizliliğine önem veriyoruz. Bu politika, cemaltun.ch adresini ziyaret ettiğinizde verilerinizin nasıl işlendiğini açıklar."
+      },
+      "data": {
+        "title": "2. Toplanan Veriler",
+        "content": "Web sitemizde herhangi bir üyelik sistemi bulunmamaktadır. İletişim formu aracılığıyla bizimle paylaştığınız Ad, E-posta ve Mesaj bilgileri, yalnızca taleplerinize yanıt vermek amacıyla saklanır."
+      },
+      "cookies": {
+        "title": "3. Çerezler ve Analiz",
+        "content": "Kullanıcı deneyimini iyileştirmek için temel çerezler ve anonim istatistik araçları kullanılabilir. Bu veriler kimlik belirleyici nitelikte değildir."
+      },
+      "rights": {
+        "title": "4. Haklarınız",
+        "content": "Kişisel verilerinize erişme, düzeltme veya silinmesini talep etme hakkına sahipsiniz. Sorularınız için iletişim formu üzerinden bizimle iletişime geçebilirsiniz."
+      }
+    }
   }
 }

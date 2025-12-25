@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { Link } from "react-router-dom"; // Sayfa geçişi için ekledik
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -102,7 +103,7 @@ const Contact = () => {
       {/* ALT KISIM (Linkler ve Copyright) */}
       <div className="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-10 border-t border-black/10 pt-10">
 
-        {/* Linkler Listesi - Mobilde ve Tablette merkezde, Desktopta solda */}
+        {/* Sol Taraf: Sosyal Linkler */}
         <div className="flex flex-wrap justify-center lg:justify-start gap-x-8 gap-y-4">
           {links.map((link) => (
             <a
@@ -117,10 +118,19 @@ const Contact = () => {
           ))}
         </div>
 
-        {/* Copyright - Mobilde ve Tablette merkezde, Desktopta sağda */}
-        <div className="text-[0.6rem] font-manrope opacity-30 tracking-[0.2em] uppercase text-black text-center lg:text-right leading-relaxed">
-          © {new Date().getFullYear()} Cem Altun. <br />
-          {t('contact.copyright')}
+        {/* Sağ Taraf: Copyright ve Privacy */}
+        <div className="flex flex-col gap-2 text-center lg:text-right">
+          <Link
+            to="/privacy"
+            className="text-[0.55rem] font-manrope font-bold tracking-[0.2em] uppercase text-black opacity-20 hover:opacity-60 transition-opacity duration-300"
+          >
+            {t('privacy.title')}
+          </Link>
+
+          <div className="text-[0.6rem] font-manrope opacity-30 tracking-[0.2em] uppercase text-black leading-relaxed">
+            © {new Date().getFullYear()} Cem Altun. <br />
+            {t('contact.copyright')}
+          </div>
         </div>
       </div>
     </section>

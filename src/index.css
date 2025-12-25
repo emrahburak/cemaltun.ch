@@ -98,7 +98,7 @@
 html {
   overflow-y: scroll;
   /* Kaydırma çubuğu her zaman teknik olarak aktif olsun */
-  scroll-behavior: auto !important;
+  scroll-behavior: smooth !important;
   /* GSAP snap ile çakışmaması için */
 }
 

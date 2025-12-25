@@ -36,5 +36,28 @@
   "contact": {
     "location": "Ansässig in der Schweiz & Türkei",
     "copyright": "Komponist / Film, Theater & Medien."
+  },
+  "privacy": {
+    "meta_title": "Datenschutzerklärung | Cem Altun",
+    "title": "Datenschutzerklärung",
+    "last_updated": "Zuletzt aktualisiert",
+    "sections": {
+      "general": {
+        "title": "1. Überblick",
+        "content": "Als Cem Altun ('Wir') legen wir grossen Wert auf die Sicherheit und den Schutz Ihrer persönlichen Daten. Diese Richtlinie erklärt, wie Ihre Daten beim Besuch von cemaltun.ch verarbeitet werden."
+      },
+      "data": {
+        "title": "2. Datenerhebung",
+        "content": "Auf unserer Website gibt es kein Mitgliedschaftssystem. Die Informationen (Name, E-Mail, Nachricht), die Sie uns über das Kontaktformular mitteilen, werden ausschliesslich zur Bearbeitung Ihrer Anfragen gespeichert."
+      },
+      "cookies": {
+        "title": "3. Cookies und Analysen",
+        "content": "Zur Verbesserung der Benutzererfahrung können grundlegende Cookies und anonyme Statistik-Tools verwendet werden. Diese Daten sind nicht personenbezogen."
+      },
+      "rights": {
+        "title": "4. Ihre Rechte",
+        "content": "Sie haben das Recht auf Auskunft, Berichtigung oder Löschung Ihrer personenbezogenen Daten. Bei Fragen wenden Sie sich bitte über das Kontaktformular an uns."
+      }
+    }
   }
 }

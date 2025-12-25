@@ -37,5 +37,28 @@
   "contact": {
     "location": "Based in Switzerland & Turkey",
     "copyright": "Composer / Film, Theater & Media."
+  },
+  "privacy": {
+    "meta_title": "Privacy Policy | Cem Altun",
+    "title": "Privacy Policy",
+    "last_updated": "Last Updated",
+    "sections": {
+      "general": {
+        "title": "1. Overview",
+        "content": "As Cem Altun ('We'), we value the security and privacy of your personal data. This policy explains how your data is processed when you visit cemaltun.ch."
+      },
+      "data": {
+        "title": "2. Data Collection",
+        "content": "There is no membership system on our website. The Name, E-mail, and Message information you share via the contact form is stored solely for the purpose of responding to your requests."
+      },
+      "cookies": {
+        "title": "3. Cookies and Analytics",
+        "content": "Basic cookies and anonymous statistical tools may be used to improve the user experience. This data is not personally identifiable."
+      },
+      "rights": {
+        "title": "4. Your Rights",
+        "content": "You have the right to access, correct, or request the deletion of your personal data. For inquiries, please contact us via the contact form."
+      }
+    }
   }
 }
