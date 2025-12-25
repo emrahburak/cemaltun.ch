@@ -1,31 +1,73 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import { useTranslation } from 'react-i18next';
+import gsap from 'gsap';
+import { useGSAP } from "@gsap/react";
 
 // Styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './MobileGallerySlide.css';
 
-export default function MobileGallerySlide({ images }: { images: string[] }) {
+interface MobileGalleryProps {
+  images: string[];
+  active?: boolean;
+}
+
+export default function MobileGallerySlide({ images, active }: MobileGalleryProps) {
   const [prevEl, setPrevEl] = useState<HTMLButtonElement | null>(null);
   const [nextEl, setNextEl] = useState<HTMLButtonElement | null>(null);
   const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
 
-  return (
-    <div className="mobile-gallery-wrapper bg-black w-full min-h-screen flex flex-col justify-center py-12">
+  const containerRef = useRef<HTMLDivElement>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
 
-      {/* --- 1. TITLE (SOL ÜSTTE) --- */}
-      <div className="w-full px-8 mb-4">
+  // --- 1. GİRİŞ ANİMASYONU TANIMI ---
+  useGSAP(() => {
+    if (!containerRef.current) return;
+
+    // Timeline'ı oluşturuyoruz (başlangıçta duraklatılmış)
+    tlRef.current = gsap.timeline({ paused: true });
+
+    tlRef.current.fromTo(
+      containerRef.current.querySelectorAll(".mg-reveal"),
+      { opacity: 0, y: 30, filter: "blur(10px)" },
+      {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power2.out"
+      }
+    );
+  }, { scope: containerRef });
+
+  // --- 2. TETİKLEME (Home.tsx'den gelen active prop'u) ---
+  useEffect(() => {
+    if (active) {
+      tlRef.current?.play();
+    } else {
+      tlRef.current?.reverse();
+    }
+  }, [active]);
+
+  return (
+    <div
+      ref={containerRef}
+      className="mobile-gallery-wrapper bg-black w-full h-full flex flex-col justify-center py-12 overflow-hidden"
+    >
+      {/* --- 1. TITLE --- */}
+      <div className="mg-reveal w-full px-8 mb-4">
         <h2 className="text-[10px] font-manrope font-bold tracking-[0.5em] uppercase opacity-40 text-white text-left">
           {t('navbar.gallery')}
         </h2>
       </div>
 
-      {/* --- 2. COUNTER (ORTADA) --- */}
-      <div className="w-full flex justify-center items-center gap-3 mb-6  text-[1.2rem] tracking-[0.3em] uppercase font-sollarish">
+      {/* --- 2. COUNTER --- */}
+      <div className="mg-reveal w-full flex justify-center items-center gap-3 mb-6 text-[1.2rem] tracking-[0.3em] uppercase font-sollarish">
         <span className="text-white font-medium">
           {activeIndex + 1 < 10 ? `0${activeIndex + 1}` : activeIndex + 1}
         </span>
@@ -36,7 +78,7 @@ export default function MobileGallerySlide({ images }: { images: string[] }) {
       </div>
 
       {/* --- 3. IMAGE AREA (SWIPER) --- */}
-      <div className="w-full px-6">
+      <div className="mg-reveal w-full px-6">
         <Swiper
           slidesPerView={1}
           spaceBetween={20}
@@ -44,7 +86,7 @@ export default function MobileGallerySlide({ images }: { images: string[] }) {
           onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
           navigation={{ prevEl, nextEl }}
           modules={[Navigation]}
-          className="mySwiper w-full h-[55vh] overflow-visible"
+          className="mySwiper w-full h-[50vh] md:h-[55vh] overflow-visible"
         >
           {images.map((src, index) => (
             <SwiperSlide key={index} className="relative overflow-hidden rounded-sm">
@@ -60,9 +102,12 @@ export default function MobileGallerySlide({ images }: { images: string[] }) {
         </Swiper>
       </div>
 
-      {/* --- 4. NAVIGASYON BUTONLARI (ORTADA) --- */}
-      <div className="flex flex-row gap-12 mt-12 items-center justify-center relative z-50">
-        <button ref={setPrevEl} className="osmo-button group relative p-4 flex items-center justify-center cursor-pointer">
+      {/* --- 4. NAVIGASYON BUTONLARI --- */}
+      <div className="mg-reveal flex flex-row gap-12 mt-12 items-center justify-center relative z-50">
+        <button
+          ref={setPrevEl}
+          className="osmo-button group relative p-4 flex items-center justify-center cursor-pointer"
+        >
           <div className="button-overlay pointer-events-none">
             <div className="overlay-corner top-left !border-white/40"></div>
             <div className="overlay-corner top-right !border-white/40"></div>
@@ -74,7 +119,10 @@ export default function MobileGallerySlide({ images }: { images: string[] }) {
           </svg>
         </button>
 
-        <button ref={setNextEl} className="osmo-button group relative p-4 flex items-center justify-center cursor-pointer">
+        <button
+          ref={setNextEl}
+          className="osmo-button group relative p-4 flex items-center justify-center cursor-pointer"
+        >
           <div className="button-overlay pointer-events-none">
             <div className="overlay-corner top-left !border-white/40"></div>
             <div className="overlay-corner top-right !border-white/40"></div>

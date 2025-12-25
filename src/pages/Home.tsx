@@ -2,8 +2,7 @@ import { useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin"; // Yeni ekledik
+import { Observer } from "gsap/Observer";
 
 // Bileşenlerin
 import Hero from "../components/Hero";
@@ -20,81 +19,124 @@ import g2 from "@/assets/images/gallery/webp/cem-altun-gallery-02.webp";
 import g3 from "@/assets/images/gallery/webp/cem-altun-gallery-03.webp";
 import g4 from "@/assets/images/gallery/webp/cem-altun-gallery-04.webp";
 
-// Plugin Kayıtları
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+gsap.registerPlugin(Observer);
 
 const Home = () => {
   const mainRef = useRef<HTMLDivElement>(null);
   const { hash } = useLocation();
   const images = [g1, g2, g3, g4];
 
-  // --- NAVİGASYON VE SCROLL YÖNETİMİ ---
+  // Logic Refs: Animasyonun beyni (Render tetiklemez, akışı korur)
+  const currentIndex = useRef(0);
+  const animating = useRef(false);
+  const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionIds = ["hero", "about", "works", "gallery", "contact"];
+
+  // --- ANA GEÇİŞ FONKSİYONU ---
+  const gotoSection = (index: number, direction: number) => {
+    if (animating.current || index < 0 || index >= sectionIds.length) return;
+
+    animating.current = true;
+    const isNext = direction > 0;
+    const currentSection = sectionsRef.current[currentIndex.current];
+    const nextSection = sectionsRef.current[index];
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        animating.current = false;
+        currentIndex.current = index;
+      }
+    });
+
+    if (isNext) {
+      // İLERİ GEÇİŞ (Perde alttan gelir)
+      tl.set(nextSection, { zIndex: 10, autoAlpha: 1 });
+      tl.fromTo(nextSection,
+        { yPercent: 100, clipPath: "inset(100% 0% 0% 0%)" },
+        { yPercent: 0, clipPath: "inset(0% 0% 0% 0%)", duration: 1.2, ease: "power4.inOut" }
+      );
+      tl.set(currentSection, { autoAlpha: 0, zIndex: 0 }, ">");
+    } else {
+      // GERİ GEÇİŞ (Mevcut perde aşağı iner)
+      tl.set(nextSection, { zIndex: 5, autoAlpha: 1, yPercent: 0, clipPath: "inset(0% 0% 0% 0%)" });
+      tl.set(currentSection, { zIndex: 10 });
+      tl.to(currentSection, {
+        yPercent: 100, clipPath: "inset(100% 0% 0% 0%)", duration: 1.2, ease: "power4.inOut"
+      });
+      tl.set(currentSection, { autoAlpha: 0 }, ">");
+    }
+  };
+
+  // --- INITIAL SETUP & OBSERVER ---
+  useGSAP(() => {
+    // Katmanların başlangıç pozisyonlarını netleştir
+    gsap.set(sectionsRef.current, {
+      position: "fixed",
+      inset: 0,
+      autoAlpha: 0,
+      zIndex: 0,
+      yPercent: 0
+    });
+
+    // Sadece Hero'yu göster
+    gsap.set(sectionsRef.current[0], { autoAlpha: 1, zIndex: 1 });
+
+    const observer = Observer.create({
+      type: "wheel,touch,pointer",
+      wheelSpeed: -1,
+      onDown: () => !animating.current && currentIndex.current > 0 && gotoSection(currentIndex.current - 1, -1),
+      onUp: () => !animating.current && currentIndex.current < sectionIds.length - 1 && gotoSection(currentIndex.current + 1, 1),
+      tolerance: 50,
+      preventDefault: true
+    });
+
+    return () => observer.kill();
+  }, { scope: mainRef });
+
+  // Sidebar Navigasyon Desteği
   useEffect(() => {
     if (hash) {
       const targetId = hash.replace("#", "");
-      const element = document.getElementById(targetId);
-
-      if (element) {
-        // Sidebar'ın kapanması ve body overflow'un düzelmesi için 150ms bekleme
-        const timeout = setTimeout(() => {
-          gsap.to(window, {
-            duration: 1.8,
-            scrollTo: {
-              y: element,
-              autoKill: true, // Kullanıcı müdahale ederse animasyonu durdurur
-            },
-            ease: "power4.inOut", // Çok asil ve yavaş başlayan/biten bir geçiş
-          });
-        }, 150);
-
-        return () => clearTimeout(timeout);
+      const targetIndex = sectionIds.indexOf(targetId);
+      if (targetIndex !== -1 && targetIndex !== currentIndex.current) {
+        gotoSection(targetIndex, targetIndex > currentIndex.current ? 1 : -1);
       }
     }
   }, [hash]);
 
-  // --- GSAP KAPSAMI ---
-  useGSAP(() => {
-    // Burada ileride ekleyeceğimiz genel animasyonlar veya 
-    // Hero sonrası geçiş optimizasyonları yer alacak.
-  }, { scope: mainRef });
-
   return (
-    <div ref={mainRef} className="relative w-full bg-white">
-      {/* Sidebar her zaman üstte */}
+    <div ref={mainRef} className="fixed inset-0 w-full h-[100dvh] overflow-hidden bg-black">
       <Sidebar />
 
-      {/* Hero: Kendi zoom ve pin mekanizmasını yönetir */}
-      <section id="hero">
-        <Hero />
-      </section>
+      {/* Hero */}
+      <div ref={el => { sectionsRef.current[0] = el; }} className="absolute inset-0 flex items-center justify-center overflow-hidden bg-black" id="hero">
+        <Hero active={true} />
+      </div>
 
-      {/* About Section */}
-      <section id="about" className="w-full min-h-screen">
-        <About />
-      </section>
+      {/* About */}
+      <div ref={el => { sectionsRef.current[1] = el; }} className="absolute inset-0 flex items-center justify-center bg-[#f5f5f5] overflow-hidden" id="about">
+        <About active={true} />
+      </div>
 
-      {/* Works Section */}
-      <section id="works" className="w-full min-h-screen">
-        <Works />
-      </section>
+      {/* Works */}
+      <div ref={el => { sectionsRef.current[2] = el; }} className="absolute inset-0 flex items-center justify-center bg-[#f5f5f5] overflow-hidden" id="works">
+        <Works active={true} />
+      </div>
 
-      {/* Gallery Section: Props'lar korundu */}
-      <section id="gallery" className="w-full min-h-screen">
-        <div className="hidden lg:block">
-          <GallerySlide images={images} />
+      {/* Gallery */}
+      <div ref={el => { sectionsRef.current[3] = el; }} className="absolute inset-0 flex items-center justify-center bg-black overflow-hidden" id="gallery">
+        <div className="w-full h-full lg:block hidden">
+          <GallerySlide images={images} active={true} />
         </div>
-        <div className="lg:hidden">
-          <MobileGallerySlide images={images} />
+        <div className="w-full h-full lg:hidden block">
+          <MobileGallerySlide images={images} active={true} />
         </div>
-      </section>
+      </div>
 
-      {/* Contact Section */}
-      <section id="contact" className="w-full min-h-screen">
-        <Contact />
-      </section>
-
-      {/* Dekoratif Arka Plan Katmanı (Eğer gerekiyorsa) */}
-      <div className="absolute top-0 left-0 w-full h-screen pointer-events-none -z-10" />
+      {/* Contact */}
+      <div ref={el => { sectionsRef.current[4] = el; }} className="absolute inset-0 flex items-center justify-center bg-[#f5f5f5] overflow-hidden" id="contact">
+        <Contact active={true} />
+      </div>
     </div>
   );
 };
