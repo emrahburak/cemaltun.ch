@@ -97,9 +97,8 @@
 /* BURASI ÇOK KRİTİK */
 html {
   overflow-y: scroll;
-  /* Kaydırma çubuğu her zaman teknik olarak aktif olsun */
-  scroll-behavior: smooth !important;
-  /* GSAP snap ile çakışmaması için */
+  /* GSAP ScrollToPlugin kullanacağımız için bunu auto yapıyoruz */
+  scroll-behavior: auto !important;
 }
 
 body {
