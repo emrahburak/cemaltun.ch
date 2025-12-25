@@ -1,27 +1,33 @@
-import { useRef, useState } from "react"; // useState eklendi
+import { useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
 import { useGSAP } from "@gsap/react";
 import { horizontalLoop } from "../../utils/horizontalloop";
 import "./GallerySlider.css";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Lightbox İthalatları
+// Lightbox
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
-gsap.registerPlugin(Draggable, ScrollTrigger);
+// Stacked yapı için prop tanımı
+interface GalleryProps {
+  images: string[];
+  active?: boolean;
+}
 
-export default function GallerySlider({ images }: { images: string[] }) {
+gsap.registerPlugin(Draggable);
+
+export default function GallerySlider({ images, active }: GalleryProps) {
   const mainRef = useRef<HTMLDivElement>(null);
   const loopRef = useRef<any>(null);
-  const quoteRef = useRef<HTMLParagraphElement>(null);
+  const quoteRef = useRef<HTMLDivElement>(null); // Alıntı sarmalayıcısı
+  const quoteTlRef = useRef<gsap.core.Timeline | null>(null);
+
   const { t } = useTranslation();
   const quoteText = t("gallery.quote");
 
-  // --- LIGHTBOX STATE ---
-  const [index, setIndex] = useState(-1); // -1 kapalı, >= 0 ise açık olan resmin indeksi
+  const [index, setIndex] = useState(-1);
 
   useGSAP(() => {
     const slides = gsap.utils.toArray<HTMLElement>('[data-slider="slide"]');
@@ -29,6 +35,7 @@ export default function GallerySlider({ images }: { images: string[] }) {
 
     if (slides.length === 0) return;
 
+    // 1. SLIDER LOOP MANTIĞI (Aynen Korundu)
     const loop = horizontalLoop(slides, {
       paused: true,
       draggable: true,
@@ -51,27 +58,31 @@ export default function GallerySlider({ images }: { images: string[] }) {
 
     loopRef.current = loop;
 
+    // 2. QUOTE (ALINTI) ANİMASYONU - BLOK BAZLI
     if (quoteRef.current) {
-      const chars = quoteRef.current.children;
-      gsap.fromTo(chars,
-        { opacity: 0, y: 10, filter: "blur(5px)" },
-        {
-          opacity: 1,
-          y: 0,
-          filter: "blur(0px)",
-          duration: 1,
-          ease: "expo.out",
-          stagger: 0.02,
-          scrollTrigger: {
-            trigger: quoteRef.current,
-            start: "top 95%",
-            once: true,
-            toggleActions: "play none none none"
+      quoteTlRef.current = gsap.timeline({ paused: true })
+        .fromTo(quoteRef.current,
+          { opacity: 0, y: 20, filter: "blur(15px)" },
+          {
+            opacity: 1,
+            y: 0,
+            filter: "blur(0px)",
+            duration: 1.5,
+            ease: "expo.out",
+            clearProps: "filter"
           }
-        }
-      );
+        );
     }
   }, { scope: mainRef, dependencies: [images] });
+
+  // 3. TETİKLEME
+  useEffect(() => {
+    if (active) {
+      quoteTlRef.current?.play();
+    } else {
+      quoteTlRef.current?.reverse();
+    }
+  }, [active]);
 
   const handleNext = () => {
     if (loopRef.current) loopRef.current.next({ duration: 0.7, ease: "power3.inOut" });
@@ -82,10 +93,7 @@ export default function GallerySlider({ images }: { images: string[] }) {
   };
 
   return (
-    <div ref={mainRef} className="osmo-gallery-section">
-
-
-      {/* LIGHTBOX BİLEŞENİ */}
+    <div ref={mainRef} className="osmo-gallery-section w-full h-full">
       <Lightbox
         index={index}
         open={index >= 0}
@@ -93,9 +101,9 @@ export default function GallerySlider({ images }: { images: string[] }) {
         slides={images.map((src) => ({ src }))}
       />
 
-      {/* OVERLAY LAYER */}
       <div className="overlay pointer-events-none">
         <div className="overlay-inner flex flex-col justify-between h-[28.125em] pointer-events-auto">
+
           {/* Sayı Counter */}
           <div className="overlay-count-row">
             <div className="count-column">
@@ -113,18 +121,13 @@ export default function GallerySlider({ images }: { images: string[] }) {
             </div>
           </div>
 
-          {/* QUOTE BÖLÜMÜ */}
+          {/* QUOTE BÖLÜMÜ - ARTIK TEMİZ VE TEK PARÇA */}
           <div className="flex flex-col items-start max-w-[20em]">
             <div
               ref={quoteRef}
-              className="font-sollarish text-[0.7em] uppercase leading-relaxed tracking-[0.15em] italic text-white/90"
+              className="font-sollarish text-[0.7em] uppercase leading-relaxed tracking-[0.15em] italic text-white/90 whitespace-pre-line"
             >
-              {quoteText.split("").map((char, index) => (
-                <span key={index} className="inline-flex flex-wrap">
-                  <span className="inline-block whitespace-pre">{char}</span>
-                  {char === "," && <div className="w-full h-0 pointer-events-none" />}
-                </span>
-              ))}
+              {quoteText}
             </div>
           </div>
 
@@ -157,7 +160,6 @@ export default function GallerySlider({ images }: { images: string[] }) {
         </div>
       </div>
 
-      {/* SLIDER MAIN AREA */}
       <div className="main">
         <div className="slider-wrap">
           <div data-slider="list" className="slider-list">
@@ -166,14 +168,14 @@ export default function GallerySlider({ images }: { images: string[] }) {
                 key={i}
                 data-slider="slide"
                 className={`slider-slide ${i === 0 ? 'active' : ''}`}
-                onClick={() => setIndex(i)} // Tıklanınca ilgili indeksi açar
-                style={{ cursor: 'pointer' }} // UX için imleç değişimi
+                onClick={() => setIndex(i)}
+                style={{ cursor: 'pointer' }}
               >
                 <div className="slide-inner group">
                   <img
                     src={src}
                     alt={`Slide ${i}`}
-                    className="w-full h-full object-cover select-none" // pointer-events-none kaldırıldı ki tıklama yakalansın
+                    className="w-full h-full object-cover select-none"
                   />
                   <div className="slide-caption">
                     <div className="caption-dot"></div>
