@@ -17,7 +17,8 @@
   "hero": {
     "official_website": "Resmi Web Sitesi",
     "composer": "Besteci",
-    "zurich": "Zürih"
+    "zurich": "Zürih",
+    "scrollHint": "Kaydır veya Sürükle"
   },
   "about": {
     "title": "Cem Hakkında",

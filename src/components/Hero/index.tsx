@@ -6,6 +6,9 @@ import defaultImage from "@/assets/images/piano/webp/cem-altun-piano-09.webp";
 // Yeni Bileşenler
 import HeroLoader from "../HeroLoader";
 import HeroContent from "../HeroContent";
+import { useTranslation } from "react-i18next";
+
+import "./style.css"
 
 interface HeroProps {
   active?: boolean;
@@ -17,6 +20,8 @@ const Hero = ({ active }: HeroProps) => {
   const spectrumRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+
+  const { t } = useTranslation()
 
   const [isRevealed, setIsRevealed] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false); // Loader'ın bir kez çalışması için
@@ -137,7 +142,7 @@ const Hero = ({ active }: HeroProps) => {
         <div className={`absolute inset-0 bg-black/40 transition-opacity duration-[3000ms] ${isRevealed ? 'opacity-100' : 'opacity-0'}`} />
       </div>
 
-      {/* 2. İÇERİK KATMANI (HeroContent) - BURASI DEĞİŞTİ */}
+      {/* 2. İÇERİK KATMANI (HeroContent) */}
       <div
         ref={contentRef}
         className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none"
@@ -147,9 +152,20 @@ const Hero = ({ active }: HeroProps) => {
         </div>
       </div>
 
-      {/* 3. SCROLL HINT (Bottom) */}
-      <div className={`absolute bottom-10 left-1/2 -translate-x-1/2 z-40 transition-all duration-1000 ${isRevealed && active ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        <div className="w-[1px] h-12 bg-gradient-to-b from-white/40 to-transparent" />
+      {/* 3. SCROLL HINT (Yeni Hareketli Yapı) */}
+      <div
+        className={`absolute bottom-10 left-1/2 -translate-x-1/2 z-40 transition-all duration-1000 flex flex-col items-center gap-4 ${isRevealed && active ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+      >
+        {/* Çeviriden gelen metin: Küçük, İtalik ve Zarif */}
+        <span className="font-sollarish text-[0.9em] uppercase tracking-[0.4em] text-white/70 font-semibold animate-pulse select-none">
+          {t("hero.scrollHint")}
+        </span>
+
+        {/* Hareketli Çizgi */}
+        <div className="w-[1.5px] h-12 bg-white/20 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-white/60 to-transparent animate-scroll-line" />
+        </div>
       </div>
 
     </section>
