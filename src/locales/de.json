@@ -17,7 +17,8 @@
   "hero": {
     "official_website": "Offizielle Webseite",
     "composer": "Komponist",
-    "zurich": "Zürich"
+    "zurich": "Zürich",
+    "scrollHint": "Scrollen oder Ziehen"
   },
   "about": {
     "title": "Über Cem",

@@ -1,0 +1,13 @@
+@keyframes scroll-line-flow {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.animate-scroll-line {
+  animation: scroll-line-flow 2.5s cubic-bezier(0.7, 0, 0.3, 1) infinite;
+}

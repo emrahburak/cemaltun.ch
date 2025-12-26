@@ -17,7 +17,8 @@
   "hero": {
     "official_website": "Official Website",
     "composer": "Composer",
-    "zurich": "Zürich"
+    "zurich": "Zürich",
+    "scrollHint": "Scroll or Drag"
   },
 
   "about": {

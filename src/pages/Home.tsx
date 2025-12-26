@@ -82,12 +82,35 @@ const Home = () => {
     gsap.set(sectionsRef.current[0], { autoAlpha: 1, zIndex: 1 });
 
     const observer = Observer.create({
+      target: window,
       type: "wheel,touch,pointer",
-      wheelSpeed: -1,
-      onDown: () => !animating.current && currentIndex.current > 0 && gotoSection(currentIndex.current - 1, -1),
-      onUp: () => !animating.current && currentIndex.current < sectionIds.length - 1 && gotoSection(currentIndex.current + 1, 1),
-      tolerance: 50,
-      preventDefault: true
+      wheelSpeed: 1.5,
+      tolerance: 5,
+      dragMinimum: 50, // 50px sürükleyince geçsin
+
+      // Orta tuşun (wheel) tarayıcıyı kaydırmasını engellemek için kritik:
+      onPress: (self) => {
+        if (self.event instanceof MouseEvent && self.event.button === 1) {
+          self.event.preventDefault();
+        }
+      },
+
+      onUp: () => {
+        if (!animating.current) gotoSection(currentIndex.current + 1, 1);
+      },
+      onDown: () => {
+        if (!animating.current) gotoSection(currentIndex.current - 1, -1);
+      },
+
+      // Sürükleme başladığında imleci değiştir
+      onDragStart: () => {
+        document.body.style.cursor = "grabbing";
+      },
+      onDragEnd: () => {
+        document.body.style.cursor = "default";
+      },
+
+      preventDefault: true // Bu genel olarak tarayıcı scroll'unu susturur
     });
 
     return () => observer.kill();
@@ -105,7 +128,7 @@ const Home = () => {
   }, [hash]);
 
   return (
-    <div ref={mainRef} className="fixed inset-0 w-full h-[100dvh] overflow-hidden bg-black">
+    <div ref={mainRef} className="fixed inset-0 w-full h-[100dvh] overflow-hidden bg-black cursor-grab active:cursor-grabbing">
       <Sidebar />
 
       {/* Hero */}
