@@ -3,11 +3,11 @@ import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
-interface WorksProps {
+interface DesktopWorksProps {
   active?: boolean;
 }
 
-const Works = ({ active }: WorksProps) => {
+const DesktopWorks = ({ active }: DesktopWorksProps) => {
   const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
@@ -17,34 +17,27 @@ const Works = ({ active }: WorksProps) => {
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    // Timeline'ı oluşturuyoruz (duraklatılmış)
+    // Timeline: Sayfaya giriş animasyonu
     const tl = gsap.timeline({ paused: true });
 
-    // Seçici: .works-reveal sınıfına sahip blokları hedefler
     tl.fromTo(
       containerRef.current.querySelectorAll(".works-reveal"),
-      {
-        opacity: 0,
-        y: 40,
-        filter: "blur(15px)"
-      },
+      { opacity: 0, y: 50, filter: "blur(10px)" },
       {
         opacity: 1,
         y: 0,
         filter: "blur(0px)",
         duration: 1.2,
-        stagger: 0.15, // Bloklar arası asil geçiş
-        ease: "power3.out",
-        clearProps: "filter"
+        stagger: 0.15,
+        ease: "power4.out"
       }
     );
 
-    // Spotify Embed'i ayrıca hafif bir gecikmeyle (scale ile) ekliyoruz
     tl.fromTo(
       containerRef.current.querySelector(".spotify-container"),
       { opacity: 0, scale: 0.95, y: 30 },
       { opacity: 1, scale: 1, y: 0, duration: 1.5, ease: "expo.out" },
-      "-=1" // Önceki animasyon bitmeden başlasın
+      "-=0.8"
     );
 
     tlRef.current = tl;
@@ -59,23 +52,19 @@ const Works = ({ active }: WorksProps) => {
   }, [active]);
 
   return (
-    <section
+    <div
       ref={containerRef}
-      id="works"
-      className="w-full h-full flex items-center justify-center bg-[#f5f5f5] px-6 md:px-20 overflow-hidden"
+      className="w-full h-full flex items-center justify-center bg-[#f5f5f5] px-20 overflow-hidden"
     >
-      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+      <div className="max-w-7xl w-full grid grid-cols-12 gap-20 items-center">
 
-        {/* SOL TARAF: Başlık ve Açıklama */}
-        <div className="lg:col-span-5 space-y-8">
+        {/* SOL TARAF: İÇERİK */}
+        <div className="col-span-5 space-y-10">
           <div className="works-reveal">
-            {/* Mobil Başlık */}
-            <h2 className="block md:hidden text-[10px] font-manrope font-bold mb-4 tracking-[0.5em] uppercase opacity-40 text-black">
+            <h2 className="text-[10px] font-manrope font-bold mb-4 tracking-[0.5em] uppercase opacity-40 text-black">
               {t('navbar.works')}
             </h2>
-
-            {/* Ana Başlık (Blok olarak geliyor) */}
-            <h3 className="text-5xl md:text-7xl font-urbanist font-light leading-[1.1] tracking-tight text-black text-left">
+            <h3 className="text-7xl font-urbanist font-light leading-[1.1] tracking-tight text-black">
               {t('works.selected')}
               <br />
               <span className="italic text-black/70 font-normal underline decoration-1 underline-offset-8 font-urbanist">
@@ -84,27 +73,25 @@ const Works = ({ active }: WorksProps) => {
             </h3>
           </div>
 
-          {/* Açıklama Metni (Blok olarak geliyor) */}
-          <p className="works-reveal font-manrope text-sm md:text-base opacity-60 max-w-sm leading-relaxed border-l border-black/10 pl-6 text-black text-left italic">
+          <p className="works-reveal font-manrope text-base opacity-60 max-w-sm leading-relaxed border-l border-black/10 pl-8 text-black italic">
             {t('works.desc')}
           </p>
 
-          {/* Buton (Blok olarak geliyor) */}
-          <div className="works-reveal pt-4 flex justify-start">
+          <div className="works-reveal pt-4">
             <a
               href={`https://open.spotify.com/playlist/${playlistId}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-4 text-[10px] font-manrope font-bold tracking-[0.2em] uppercase text-black"
+              className="group flex items-center gap-6 text-[10px] font-manrope font-bold tracking-[0.3em] uppercase text-black"
             >
-              <span className="w-10 h-[1px] bg-black transition-all duration-500 group-hover:w-16"></span>
+              <span className="w-12 h-[1px] bg-black transition-all duration-500 group-hover:w-20"></span>
               {t('works.open_spotify')}
             </a>
           </div>
         </div>
 
-        {/* SAĞ TARAF: Playlist Embed (Özel Container) */}
-        <div className="spotify-container lg:col-span-7 w-full h-[500px] md:h-[650px] shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
+        {/* SAĞ TARAF: SPOTIFY (Direkt ve Net) */}
+        <div className="spotify-container col-span-7 w-full h-[650px] shadow-[0_30px_60px_rgba(0,0,0,0.12)]">
           <iframe
             style={{ borderRadius: "12px" }}
             src={`https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator&theme=0`}
@@ -118,8 +105,8 @@ const Works = ({ active }: WorksProps) => {
         </div>
 
       </div>
-    </section>
+    </div>
   );
 };
 
-export default Works;
+export default DesktopWorks;

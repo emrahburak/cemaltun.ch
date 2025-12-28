@@ -16,7 +16,7 @@ const Sidebar = () => {
 
   // Navigasyon Linkleri - Tek bir yerden yönetim
   const navLinks = [
-    { id: 'home', path: '/' },
+    { id: 'home', path: '/#hero' },
     { id: 'about', path: '/#about' },
     { id: 'works', path: '/#works' },
     { id: 'gallery', path: '/#gallery' },
