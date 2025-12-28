@@ -9,7 +9,7 @@ interface AboutProps {
   active?: boolean;
 }
 
-const About = ({ active }: AboutProps) => {
+const DesktopAbout = ({ active }: AboutProps) => {
   const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
@@ -96,4 +96,4 @@ const About = ({ active }: AboutProps) => {
   );
 };
 
-export default About;
+export default DesktopAbout;

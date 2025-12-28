@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -7,8 +7,8 @@ import { Observer } from "gsap/Observer";
 // Bileşenlerin
 import Hero from "../components/Hero";
 import Sidebar from "../components/Sidebar";
-import About from "../components/About";
-import Works from "../components/Works";
+import DesktopWorks from "../components/DesktopWorks";
+import MobileWorks from "../components/MobileWorks";
 import Contact from "../components/Contact";
 import GallerySlide from "../components/GallerySlide";
 import MobileGallerySlide from "../components/MobileGallerySlide";
@@ -18,6 +18,8 @@ import g1 from "@/assets/images/gallery/webp/cem-altun-gallery-01.webp";
 import g2 from "@/assets/images/gallery/webp/cem-altun-gallery-02.webp";
 import g3 from "@/assets/images/gallery/webp/cem-altun-gallery-03.webp";
 import g4 from "@/assets/images/gallery/webp/cem-altun-gallery-04.webp";
+import MobileAbout from "../components/MobileAbout";
+import DesktopAbout from "../components/DesktopAbout";
 
 gsap.registerPlugin(Observer);
 
@@ -26,14 +28,16 @@ const Home = () => {
   const { hash } = useLocation();
   const images = [g1, g2, g3, g4];
 
-  // Logic Refs: Animasyonun beyni (Render tetiklemez, akışı korur)
-  const currentIndex = useRef(0);
+  // --- STATE & REFS ---
+  const [activeIndex, setActiveIndex] = useState(0); // React'in arayüzü güncellemesi için
+  const currentIndex = useRef(0); // GSAP'in takibi için (Ref her zaman güncel kalır)
   const animating = useRef(false);
   const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
   const sectionIds = ["hero", "about", "works", "gallery", "contact"];
 
-  // --- ANA GEÇİŞ FONKSİYONU ---
+  // --- ANA GEÇİŞ FONKSİYONU (TAM HALİ) ---
   const gotoSection = (index: number, direction: number) => {
+    // Sınır kontrolü ve animasyon kilidi
     if (animating.current || index < 0 || index >= sectionIds.length) return;
 
     animating.current = true;
@@ -44,12 +48,13 @@ const Home = () => {
     const tl = gsap.timeline({
       onComplete: () => {
         animating.current = false;
-        currentIndex.current = index;
+        currentIndex.current = index; // Ref'i güncelle (lojik akış)
+        setActiveIndex(index); // State'i güncelle (React Re-render - Alt bileşenleri tetikler)
       }
     });
 
     if (isNext) {
-      // İLERİ GEÇİŞ (Perde alttan gelir)
+      // İLERİ GEÇİŞ (Yeni perde alttan gelir)
       tl.set(nextSection, { zIndex: 10, autoAlpha: 1 });
       tl.fromTo(nextSection,
         { yPercent: 100, clipPath: "inset(100% 0% 0% 0%)" },
@@ -57,19 +62,18 @@ const Home = () => {
       );
       tl.set(currentSection, { autoAlpha: 0, zIndex: 0 }, ">");
     } else {
-      // GERİ GEÇİŞ (Mevcut perde aşağı iner)
+      // GERİ GEÇİŞ (Mevcut perde aşağı iner, altındaki görünür)
       tl.set(nextSection, { zIndex: 5, autoAlpha: 1, yPercent: 0, clipPath: "inset(0% 0% 0% 0%)" });
       tl.set(currentSection, { zIndex: 10 });
       tl.to(currentSection, {
         yPercent: 100, clipPath: "inset(100% 0% 0% 0%)", duration: 1.2, ease: "power4.inOut"
       });
-      tl.set(currentSection, { autoAlpha: 0 }, ">");
+      tl.set(currentSection, { autoAlpha: 0, zIndex: 0 }, ">");
     }
   };
 
   // --- INITIAL SETUP & OBSERVER ---
   useGSAP(() => {
-    // Katmanların başlangıç pozisyonlarını netleştir
     gsap.set(sectionsRef.current, {
       position: "fixed",
       inset: 0,
@@ -78,22 +82,15 @@ const Home = () => {
       yPercent: 0
     });
 
-    // Sadece Hero'yu göster
+    // Başlangıçta ilk bölümü göster
     gsap.set(sectionsRef.current[0], { autoAlpha: 1, zIndex: 1 });
 
     const observer = Observer.create({
       target: window,
       type: "wheel,touch,pointer",
-      wheelSpeed: 1.5,
+      wheelSpeed: -1.5, // Masaüstü için ters yön düzeltmesi
       tolerance: 5,
-      dragMinimum: 50, // 50px sürükleyince geçsin
-
-      // Orta tuşun (wheel) tarayıcıyı kaydırmasını engellemek için kritik:
-      onPress: (self) => {
-        if (self.event instanceof MouseEvent && self.event.button === 1) {
-          self.event.preventDefault();
-        }
-      },
+      dragMinimum: 50,
 
       onUp: () => {
         if (!animating.current) gotoSection(currentIndex.current + 1, 1);
@@ -101,16 +98,12 @@ const Home = () => {
       onDown: () => {
         if (!animating.current) gotoSection(currentIndex.current - 1, -1);
       },
-
-      // Sürükleme başladığında imleci değiştir
-      onDragStart: () => {
-        document.body.style.cursor = "grabbing";
+      onPress: (self) => {
+        if (self.event instanceof MouseEvent && self.event.button === 1) {
+          self.event.preventDefault();
+        }
       },
-      onDragEnd: () => {
-        document.body.style.cursor = "default";
-      },
-
-      preventDefault: true // Bu genel olarak tarayıcı scroll'unu susturur
+      preventDefault: true
     });
 
     return () => observer.kill();
@@ -128,37 +121,47 @@ const Home = () => {
   }, [hash]);
 
   return (
-    <div ref={mainRef} className="fixed inset-0 w-full h-[100dvh] overflow-hidden bg-black cursor-grab active:cursor-grabbing">
+    <div ref={mainRef} className="fixed inset-0 w-full h-[100dvh] overflow-hidden bg-black">
       <Sidebar />
 
-      {/* Hero */}
-      <div ref={el => { sectionsRef.current[0] = el; }} className="absolute inset-0 flex items-center justify-center overflow-hidden bg-black" id="hero">
-        <Hero active={true} />
+      {/* 0: Hero */}
+      <div ref={el => { sectionsRef.current[0] = el; }} className="absolute inset-0" id="hero">
+        <Hero active={activeIndex === 0} />
       </div>
 
-      {/* About */}
-      <div ref={el => { sectionsRef.current[1] = el; }} className="absolute inset-0 flex items-center justify-center bg-[#f5f5f5] overflow-hidden" id="about">
-        <About active={true} />
-      </div>
-
-      {/* Works */}
-      <div ref={el => { sectionsRef.current[2] = el; }} className="absolute inset-0 flex items-center justify-center bg-[#f5f5f5] overflow-hidden" id="works">
-        <Works active={true} />
-      </div>
-
-      {/* Gallery */}
-      <div ref={el => { sectionsRef.current[3] = el; }} className="absolute inset-0 flex items-center justify-center bg-black overflow-hidden" id="gallery">
+      {/* About Section */}
+      <div ref={el => { sectionsRef.current[1] = el; }} className="absolute inset-0 overflow-hidden" id="about">
         <div className="w-full h-full lg:block hidden">
-          <GallerySlide images={images} active={true} />
+          <DesktopAbout active={activeIndex === 1} />
         </div>
         <div className="w-full h-full lg:hidden block">
-          <MobileGallerySlide images={images} active={true} />
+          <MobileAbout active={activeIndex === 1} />
         </div>
       </div>
 
-      {/* Contact */}
-      <div ref={el => { sectionsRef.current[4] = el; }} className="absolute inset-0 flex items-center justify-center bg-[#f5f5f5] overflow-hidden" id="contact">
-        <Contact active={true} />
+      {/* 2: Works */}
+      <div ref={el => { sectionsRef.current[2] = el; }} className="absolute inset-0 overflow-hidden" id="works">
+        <div className="w-full h-full lg:block hidden">
+          <DesktopWorks active={activeIndex === 2} />
+        </div>
+        <div className="w-full h-full lg:hidden block">
+          <MobileWorks active={activeIndex === 2} />
+        </div>
+      </div>
+
+      {/* 3: Gallery */}
+      <div ref={el => { sectionsRef.current[3] = el; }} className="absolute inset-0 overflow-hidden" id="gallery">
+        <div className="w-full h-full lg:block hidden">
+          <GallerySlide images={images} active={activeIndex === 3} />
+        </div>
+        <div className="w-full h-full lg:hidden block">
+          <MobileGallerySlide images={images} active={activeIndex === 3} />
+        </div>
+      </div>
+
+      {/* 4: Contact */}
+      <div ref={el => { sectionsRef.current[4] = el; }} className="absolute inset-0" id="contact">
+        <Contact active={activeIndex === 4} />
       </div>
     </div>
   );
