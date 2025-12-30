@@ -5,14 +5,14 @@ import gsap from "gsap";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const location = useLocation(); // Mevcut sayfayı takip etmek için
 
   const sidebarRef = useRef(null);
   const overlayRef = useRef(null);
   const menuItemsRef = useRef<HTMLUListElement>(null);
 
-  const availableLanguages = ['en', 'de', 'tr'];
+  // const availableLanguages = ['en', 'de', 'tr'];
 
   // Navigasyon Linkleri - Tek bir yerden yönetim
   const navLinks = [
@@ -89,17 +89,17 @@ const Sidebar = () => {
 
         {/* Alt Kısım: Dil Seçici ve Footer */}
         <div className="border-t border-white/20 pt-10">
-          <div className="flex gap-4 mb-6 text-lg font-manrope tracking-widest uppercase">
-            {availableLanguages.map((lng) => (
-              <button
-                key={lng}
-                onClick={() => i18n.changeLanguage(lng)}
-                className={`transition-opacity duration-300 ${i18n.language === lng ? "opacity-100 font-bold" : "opacity-40 hover:opacity-100"}`}
-              >
-                {lng}
-              </button>
-            ))}
-          </div>
+          {/* <div className="flex gap-4 mb-6 text-lg font-manrope tracking-widest uppercase"> */}
+          {/*   {availableLanguages.map((lng) => ( */}
+          {/*     <button */}
+          {/*       key={lng} */}
+          {/*       onClick={() => i18n.changeLanguage(lng)} */}
+          {/*       className={`transition-opacity duration-300 ${i18n.language === lng ? "opacity-100 font-bold" : "opacity-40 hover:opacity-100"}`} */}
+          {/*     > */}
+          {/*       {lng} */}
+          {/*     </button> */}
+          {/*   ))} */}
+          {/* </div> */}
           <p className="text-[10px] opacity-40 tracking-[0.3em] uppercase">
             © {new Date().getFullYear()} Cem Altun
           </p>
