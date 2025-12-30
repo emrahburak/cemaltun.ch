@@ -14,10 +14,7 @@ import GallerySlide from "../components/GallerySlide";
 import MobileGallerySlide from "../components/MobileGallerySlide";
 
 // Resimlerin
-import g1 from "@/assets/images/gallery/webp/cem-altun-gallery-01.webp";
-import g2 from "@/assets/images/gallery/webp/cem-altun-gallery-02.webp";
-import g3 from "@/assets/images/gallery/webp/cem-altun-gallery-03.webp";
-import g4 from "@/assets/images/gallery/webp/cem-altun-gallery-04.webp";
+import { galleryData } from "../data/gallery";
 import MobileAbout from "../components/MobileAbout";
 import DesktopAbout from "../components/DesktopAbout";
 import Langs from "../components/Langs";
@@ -27,7 +24,6 @@ gsap.registerPlugin(Observer);
 const Home = () => {
   const mainRef = useRef<HTMLDivElement>(null);
   const { hash } = useLocation();
-  const images = [g1, g2, g3, g4];
 
   // --- STATE & REFS ---
   const [activeIndex, setActiveIndex] = useState(0); // React'in arayüzü güncellemesi için
@@ -153,11 +149,12 @@ const Home = () => {
 
       {/* 3: Gallery */}
       <div ref={el => { sectionsRef.current[3] = el; }} className="absolute inset-0 overflow-hidden" id="gallery">
+
         <div className="w-full h-full lg:block hidden">
-          <GallerySlide images={images} active={activeIndex === 3} />
+          <GallerySlide data={galleryData} active={activeIndex === 3} />
         </div>
         <div className="w-full h-full lg:hidden block">
-          <MobileGallerySlide images={images} active={activeIndex === 3} />
+          <MobileGallerySlide data={galleryData} active={activeIndex === 3} />
         </div>
       </div>
 
