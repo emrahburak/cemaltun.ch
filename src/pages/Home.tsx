@@ -20,6 +20,7 @@ import g3 from "@/assets/images/gallery/webp/cem-altun-gallery-03.webp";
 import g4 from "@/assets/images/gallery/webp/cem-altun-gallery-04.webp";
 import MobileAbout from "../components/MobileAbout";
 import DesktopAbout from "../components/DesktopAbout";
+import Langs from "../components/Langs";
 
 gsap.registerPlugin(Observer);
 
@@ -123,6 +124,7 @@ const Home = () => {
   return (
     <div ref={mainRef} className="fixed inset-0 w-full h-[100dvh] overflow-hidden bg-black">
       <Sidebar />
+      <Langs />
 
       {/* 0: Hero */}
       <div ref={el => { sectionsRef.current[0] = el; }} className="absolute inset-0" id="hero">
