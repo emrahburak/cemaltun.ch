@@ -82,11 +82,36 @@ const Hero = ({ active }: HeroProps) => {
       "-=2.8"
     );
 
-    // 3. ADIM: CONTENT ANIMASYONU (HeroContent girişi)
-    tl.fromTo(contentRef.current,
-      { opacity: 0, y: 15, filter: "blur(10px)" },
-      { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.5, ease: "expo.out" },
-      "-=1.5"
+    // --- 3. ADIM: DÜZELTİLMİŞ CONTENT ANIMASYONU ---
+    // Artık contentRef'i bir bütün olarak değil, parçalarını canlandırıyoruz.
+    // Önce kapsayıcıyı görünür yapalım (hareket ettirmeden)
+    tl.set(contentRef.current, { opacity: 1 });
+
+    // Yan metinler (Official Website vb.) biraz daha önce ve sakin gelsin
+    tl.fromTo(".hero-subtext",
+      { opacity: 0, y: 10 },
+      { opacity: 0.6, y: 0, duration: 1.5, stagger: 0.3, ease: "power2.out" },
+      "-=1.0"
+    );
+
+    // CEM ALTUN - İşte o tane tane beliren kısım
+    tl.fromTo(".char",
+      {
+        opacity: 0,
+        y: 30, // Mesafe biraz daha kısa, hareket daha kontrollü
+        rotateX: -90,
+        filter: "blur(10px)" // Başlangıçta hafif fluluk asalet katar
+      },
+      {
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        filter: "blur(0px)",
+        duration: 1.8, // Her bir harfin animasyon süresi
+        stagger: 0.18, // Harfler arasındaki bekleme (İşte bu 'tane tane' hissi)
+        ease: "power3.out" // Daha doğal ve yumuşak bir duruş
+      },
+      "-=1.2" // Işık hüzmesiyle eşzamanlı başlasın
     );
 
     tlRef.current = tl;
