@@ -61,11 +61,9 @@ const DesktopAbout = ({ active }: AboutProps) => {
         {/* SOL TARAF: BAŞLIK VE İÇERİK */}
         <div className="flex flex-col justify-center gap-6">
 
-          {/* 1. Başlık Reveal */}
           <h2 className="about-reveal text-[10px] md:text-sm font-urbanist font-bold tracking-[0.4em] uppercase opacity-40">
             {t("about.title")}
           </h2>
-
           {/* 2. Mobil Görsel Reveal (Sadece Mobilde) */}
           <div className="about-reveal block md:hidden w-full h-48 overflow-hidden shadow-lg border border-black/5">
             <img src={defaultImage} alt="Cem Altun" className="w-full h-full object-cover" />
