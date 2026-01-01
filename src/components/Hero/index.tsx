@@ -47,7 +47,7 @@ const Hero = ({ active }: HeroProps) => {
     tl.to(".shutter-top, .shutter-bottom", {
       scaleY: 0,
       duration: 2.2,
-      ease: "expo.inOut",
+      ease: "sine.inOut",
       onStart: () => {
         setHasLoaded(true);
         setIsRevealed(true);
