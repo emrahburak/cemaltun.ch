@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import defaultImage from "@/assets/images/about/webp/cem-altun-about-01.webp";
-import RevisedText from "../RevisedText";
 
 // Stacked (Fullscreen) yapı için prop tanımı
 interface AboutProps {
