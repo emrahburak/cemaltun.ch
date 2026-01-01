@@ -23,3 +23,9 @@
   transform-style: preserve-3d;
   /* 3D derinliği korur */
 }
+
+.shutter-top,
+.shutter-bottom {
+  will-change: transform;
+  backface-visibility: hidden;
+}

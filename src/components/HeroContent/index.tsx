@@ -1,56 +1,36 @@
 import { forwardRef } from "react";
 import { useTranslation } from "react-i18next";
+import RevisedText from "../RevisedText";
+
+
 
 const HeroContent = forwardRef<HTMLDivElement>((_, ref) => {
   const { t } = useTranslation();
-  const name = "CEM ALTUN";
 
   return (
     <div ref={ref} className="absolute inset-0 z-30 flex flex-col items-center justify-center text-center text-white pointer-events-none">
       <div className="space-y-6 md:space-y-8 px-4">
 
-        {/* Subtext Sınıfı Eklendi */}
-        <p className="hero-subtext font-manrope text-lg md:text-xs tracking-[0.8em] uppercase font-semibold ">
-          {t('hero.official_website')}
-        </p>
+        {/* ÜST METİN: Stagger yok ama ileride ekleyebilirsin */}
+        <RevisedText
+          text={t('hero.official_website')}
+          className="hero-subtext font-manrope text-lg md:text-xs tracking-[0.8em] uppercase font-semibold opacity-60"
+        />
 
-        <h1
-          className="font-bodoni-moda text-5xl md:text-8xl lg:text-9xl font-bold tracking-tighter uppercase flex overflow-visible"
-          style={{ perspective: "1000px" }} // 3D dönüşün derinliğini artırır
-        >
-          {name.split("").map((char, index) => (
-            <span key={index} className="char-wrapper relative inline-block overflow-visible">
+        {/* ANA BAŞLIK: Stagger ve Gölge burada devreye giriyor */}
+        <RevisedText
+          text="CEM ALTUN"
+          as="h1"
+          stagger
+          charShadow
+          className="font-bodoni-moda text-5xl md:text-8xl lg:text-9xl font-bold tracking-tighter uppercase"
+        />
 
-              {/* 1. GÖLGE KATMANI (Arka Plan) */}
-              <span
-                className="char-shadow absolute top-0 left-0 text-black/40 select-none pointer-events-none origin-bottom-left"
-                style={{
-                  whiteSpace: char === " " ? "pre" : "normal",
-                  // Skew ve Scale ile gölgeyi "yatay düzleme" yatırıyoruz
-                  transform: "skewX(-45deg) scaleY(0.5) translateY(10px)",
-                  filter: "blur(4px)"
-                }}
-              >
-                {char}
-              </span>
-
-              {/* 2. ANA HARF (Ön Plan) */}
-              <span
-                className="char inline-block relative z-10"
-                style={{ whiteSpace: char === " " ? "pre" : "normal" }}
-              >
-                {char}
-              </span>
-
-            </span>
-          ))}
-        </h1>
-
-        {/* Subtext Sınıfı Eklendi */}
-        <div className="hero-subtext flex items-center justify-center gap-4 md:gap-8 font-urbanist text-[10px] md:text-sm tracking-[0.5em] uppercase font-bold">
-          <span>{t('hero.composer')}</span>
+        {/* ALT BİLGİ: İki ayrı RevisedText veya bütünsel kullanım */}
+        <div className="hero-subtext flex items-center justify-center gap-4 md:gap-8 font-urbanist text-[10px] md:text-sm tracking-[0.5em] uppercase font-bold opacity-60">
+          <RevisedText text={t('hero.composer')} />
           <span className="w-1 h-1 bg-white/20 rounded-full"></span>
-          <span>{t('hero.zurich')}</span>
+          <RevisedText text={t('hero.zurich')} />
         </div>
 
       </div>

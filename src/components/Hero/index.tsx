@@ -20,7 +20,6 @@ const Hero = ({ active }: HeroProps) => {
   const spectrumRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
-  const staggerVal = 0.18;
 
   const { t } = useTranslation()
 
@@ -28,133 +27,91 @@ const Hero = ({ active }: HeroProps) => {
   const [hasLoaded, setHasLoaded] = useState(false); // Loader'ın bir kez çalışması için
   const tlRef = useRef<gsap.core.Timeline | null>(null);
 
-  // --- 1. İLK AÇILIŞ ANİMASYONU (LOADER + REVEAL) ---
+  const staggerVal = 0.1; // Değeri buradan değiştirince her yer güncellenecek
+
   useGSAP(() => {
     if (!containerRef.current || !imageWrapperRef.current) return;
 
     const tl = gsap.timeline({
       onComplete: () => {
-        setIsRevealed(true);
         setHasLoaded(true);
+        // onComplete artık sadece durumu mühürler
       }
     });
 
-    // 1. ADIM: LOADER ANIMASYONU (Spectrum)
-    tl.to(spectrumRef.current, {
-      width: "100%",
-      duration: 2.0,
-      ease: "power4.inOut"
-    });
+    // --- 1. ADIM: LOADER ---
+    tl.to(spectrumRef.current, { width: "100%", duration: 2.0, ease: "power4.inOut" });
+    tl.to(spectrumRef.current, { opacity: 0, duration: 0.3 });
 
-    tl.to(spectrumRef.current, { opacity: 0, duration: 0.4 });
+    // --- 2. ADIM: SHUTTER REVEAL ---
+    tl.to(".shutter-top, .shutter-bottom", {
+      scaleY: 0,
+      duration: 2.2,
+      ease: "expo.inOut",
+      onStart: () => {
+        setHasLoaded(true);
+        setIsRevealed(true);
+      }
+    }, "<");
 
-    tl.to(overlayRef.current, {
-      opacity: 0,
-      duration: 1.5,
-      ease: "power2.inOut"
-    }, "-=0.2");
-
-    // 2. ADIM: IMAGE REVEAL (Radial Mask & Blur)
     tl.fromTo(imageWrapperRef.current,
-      {
-        opacity: 0,
-        filter: "blur(40px) brightness(2) contrast(0.5)",
-        WebkitMaskImage: "radial-gradient(circle, white 0%, transparent 20%)",
-        maskImage: "radial-gradient(circle, white 0%, transparent 20%)",
-        WebkitMaskSize: "300% 300%",
-        maskSize: "300% 300%",
-        WebkitMaskPosition: "center",
-        maskPosition: "center"
-      },
-      {
-        opacity: 1,
-        filter: "blur(0px) brightness(1) contrast(1)",
-        WebkitMaskImage: "radial-gradient(circle, white 100%, transparent 100%)",
-        maskImage: "radial-gradient(circle, white 100%, transparent 100%)",
-        duration: 3.5,
-        ease: "power2.out",
-      }, "-=1.5"
+      { filter: "blur(30px) scale(1.05)" },
+      { filter: "blur(0px) scale(1)", duration: 2.5, ease: "power2.out" },
+      "<"
     );
 
-    // 2.5 ADIM: LENS SWEEP
-    tl.fromTo("#light-beam",
-      { x: "-150%", opacity: 0 },
-      { x: "150%", opacity: 1, duration: 2.5, ease: "power2.inOut" },
-      "-=2.8"
-    );
-
-    // --- 3. ADIM: DÜZELTİLMİŞ CONTENT ANIMASYONU ---
-    // Artık contentRef'i bir bütün olarak değil, parçalarını canlandırıyoruz.
-    // Önce kapsayıcıyı görünür yapalım (hareket ettirmeden)
-    tl.set(contentRef.current, { opacity: 1 });
-
-    // Yan metinler (Official Website vb.) biraz daha önce ve sakin gelsin
-    tl.fromTo(".hero-subtext",
-      { opacity: 0, y: 10 },
-      { opacity: 0.6, y: 0, duration: 1.5, stagger: 0.3, ease: "power2.out" },
-      "-=1.0"
-    );
+    // --- 3. ADIM: İÇERİK (HARFLER) ---
+    tl.set(contentRef.current, { opacity: 1 }, "-=1.0");
 
     tl.fromTo(".char",
       { opacity: 0, y: 30, rotateX: -90 },
-      { opacity: 1, y: 0, rotateX: 0, duration: 1.8, stagger: staggerVal, ease: "power3.out" },
-      "-=1.5"
+      { opacity: 1, y: 0, rotateX: 0, duration: 1.5, stagger: staggerVal, ease: "power3.out" },
+      "-=1.5" // Perdeler açılırken harfler başlasın
     );
 
-    // UZAYAN GÖLGELERİN BELİRMESİ
+    // --- KRİTİK DOKUNUŞ: LIGHT BEAM BURADA GİRMELİ ---
+    tl.fromTo("#light-beam",
+      { x: "-150%", opacity: 0 },
+      { x: "150%", opacity: 1, duration: 2.5, ease: "power2.inOut" },
+      "-=1.8" // Harfler yükselirken ışık süzülerek geçsin (Çok daha sinematik!)
+    );
+
+    // GÖLGELER VE FİNAL
     tl.fromTo(".char-shadow",
-      {
-        opacity: 0,
-        scaleX: 0.5, // Başta kısa olsun
-        skewX: -20   // Daha az eğik
-      },
-      {
-        opacity: 0.4,
-        scaleX: 1.2, // Işık vurdukça uzasın
-        skewX: -55,  // Tam o istediğin yana yatma açısı
-        duration: 2.0,
-        stagger: staggerVal,
-        ease: "power2.out"
-      },
-      "-=1.8" // Harflerle neredeyse aynı anda başlasın
+      { opacity: 0, scaleX: 0.5, skewX: -20 },
+      { opacity: 0.4, scaleX: 1.2, skewX: -55, duration: 1.8, stagger: staggerVal, ease: "power2.out" },
+      "-=2.0"
     );
 
-    // --- YENİLENMİŞ GÖLGE ADIMI ---
-    // YENİLENMİŞ GÖLGE ADIMI (Hero.tsx içinde en son)
     tl.to(".char", {
       filter: "drop-shadow(10px 5px 8px rgba(0, 0, 0, 0.5))",
-      duration: 1.5,
-      stagger: 0.1,
-      ease: "sine.out" // Daha yumuşak bir geçiş
-    }, "+=0.2"); // Cast shadow (uzun gölge) bittikten kısa bir süre sonra başlasın
+      duration: 1.2,
+      stagger: staggerVal,
+      ease: "sine.out"
+    }, "-=1.0");
 
     tlRef.current = tl;
   }, { scope: containerRef });
 
-  // --- 2. GERİ DÖNÜŞ ANİMASYONU (Stacked Scroll için) ---
+  // --- TEKRARLAYAN IŞIK FONKSİYONU ---
+  const triggerLightBeam = () => {
+    // Timeline'dan bağımsız, hızlı bir ışık geçişi
+    gsap.fromTo("#light-beam",
+      { x: "-150%", opacity: 0 },
+      { x: "150%", opacity: 1, duration: 2.0, ease: "power2.inOut" }
+    );
+  };
+
   useEffect(() => {
-    // Eğer loader bitmişse (hasLoaded) ve kullanıcı Hero'ya geri dönmüşse (active)
-    // Sadece içeriği (content) hafifçe tekrar canlandırabiliriz.
-    if (hasLoaded) {
-      if (active) {
-        gsap.to(contentRef.current, {
-          opacity: 1,
-          y: 0,
-          filter: "blur(0px)",
-          duration: 1,
-          ease: "power2.out"
-        });
-      } else {
-        // Hero'dan ayrılırken içeriği hafifçe flulaştırıp aşağı itelim
-        gsap.to(contentRef.current, {
-          opacity: 0,
-          y: 10,
-          filter: "blur(5px)",
-          duration: 0.8
-        });
-      }
+    if (hasLoaded && active) {
+      // Hero'ya her geri gelişte ışık şovunu yap
+      triggerLightBeam();
+
+      // İçeriği de canlandır
+      gsap.to(contentRef.current, { opacity: 1, y: 0, filter: "blur(0px)", duration: 1 });
     }
   }, [active, hasLoaded]);
+
 
   return (
     <section ref={containerRef} className="relative w-full h-full bg-white overflow-hidden">
@@ -164,6 +121,11 @@ const Hero = ({ active }: HeroProps) => {
 
       {/* 1. ARKA PLAN KATMANI (Görsel) */}
       <div ref={imageWrapperRef} className="absolute inset-0 z-10 overflow-hidden bg-white">
+        {/* BEYAZ GÖZ KAPAKLARI (Perdeler) */}
+        <div className="absolute inset-0 z-50 pointer-events-none overflow-hidden">
+          <div className="shutter-top absolute top-0 left-0 w-full h-1/2 bg-white origin-top" />
+          <div className="shutter-bottom absolute bottom-0 left-0 w-full h-1/2 bg-white origin-bottom" />
+        </div>
         <img src={defaultImage} alt="Cem Altun" className="w-full h-full object-cover" />
 
         {/* LENS SWEEP EFECT */}
