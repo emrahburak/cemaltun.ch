@@ -11,3 +11,15 @@
 .animate-scroll-line {
   animation: scroll-line-flow 2.5s cubic-bezier(0.7, 0, 0.3, 1) infinite;
 }
+
+/* Hero.tsx tarafından import edilen style.css içine */
+.char {
+  display: inline-block;
+  /* Animasyonun çalışması için şart */
+  will-change: filter, transform;
+  /* GPU optimizasyonu */
+  backface-visibility: hidden;
+  /* Titreme önleyici */
+  transform-style: preserve-3d;
+  /* 3D derinliği korur */
+}

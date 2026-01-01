@@ -10,24 +10,38 @@ const HeroContent = forwardRef<HTMLDivElement>((_, ref) => {
       <div className="space-y-6 md:space-y-8 px-4">
 
         {/* Subtext Sınıfı Eklendi */}
-        <p className="hero-subtext font-manrope text-lg md:text-xs tracking-[0.8em] uppercase font-semibold">
+        <p className="hero-subtext font-manrope text-lg md:text-xs tracking-[0.8em] uppercase font-semibold ">
           {t('hero.official_website')}
         </p>
 
         <h1
-          className="font-bodoni-moda text-5xl md:text-8xl lg:text-9xl font-bold tracking-tighter uppercase flex overflow-hidden"
+          className="font-bodoni-moda text-5xl md:text-8xl lg:text-9xl font-bold tracking-tighter uppercase flex overflow-visible"
           style={{ perspective: "1000px" }} // 3D dönüşün derinliğini artırır
         >
           {name.split("").map((char, index) => (
-            <span
-              key={index}
-              className="char inline-block origin-bottom"
-              style={{
-                whiteSpace: char === " " ? "pre" : "normal",
-                display: "inline-block"
-              }}
-            >
-              {char}
+            <span key={index} className="char-wrapper relative inline-block overflow-visible">
+
+              {/* 1. GÖLGE KATMANI (Arka Plan) */}
+              <span
+                className="char-shadow absolute top-0 left-0 text-black/40 select-none pointer-events-none origin-bottom-left"
+                style={{
+                  whiteSpace: char === " " ? "pre" : "normal",
+                  // Skew ve Scale ile gölgeyi "yatay düzleme" yatırıyoruz
+                  transform: "skewX(-45deg) scaleY(0.5) translateY(10px)",
+                  filter: "blur(4px)"
+                }}
+              >
+                {char}
+              </span>
+
+              {/* 2. ANA HARF (Ön Plan) */}
+              <span
+                className="char inline-block relative z-10"
+                style={{ whiteSpace: char === " " ? "pre" : "normal" }}
+              >
+                {char}
+              </span>
+
             </span>
           ))}
         </h1>

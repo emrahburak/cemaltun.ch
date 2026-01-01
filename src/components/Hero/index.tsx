@@ -20,6 +20,7 @@ const Hero = ({ active }: HeroProps) => {
   const spectrumRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const staggerVal = 0.18;
 
   const { t } = useTranslation()
 
@@ -94,25 +95,38 @@ const Hero = ({ active }: HeroProps) => {
       "-=1.0"
     );
 
-    // CEM ALTUN - İşte o tane tane beliren kısım
     tl.fromTo(".char",
+      { opacity: 0, y: 30, rotateX: -90 },
+      { opacity: 1, y: 0, rotateX: 0, duration: 1.8, stagger: staggerVal, ease: "power3.out" },
+      "-=1.5"
+    );
+
+    // UZAYAN GÖLGELERİN BELİRMESİ
+    tl.fromTo(".char-shadow",
       {
         opacity: 0,
-        y: 30, // Mesafe biraz daha kısa, hareket daha kontrollü
-        rotateX: -90,
-        filter: "blur(10px)" // Başlangıçta hafif fluluk asalet katar
+        scaleX: 0.5, // Başta kısa olsun
+        skewX: -20   // Daha az eğik
       },
       {
-        opacity: 1,
-        y: 0,
-        rotateX: 0,
-        filter: "blur(0px)",
-        duration: 1.8, // Her bir harfin animasyon süresi
-        stagger: 0.18, // Harfler arasındaki bekleme (İşte bu 'tane tane' hissi)
-        ease: "power3.out" // Daha doğal ve yumuşak bir duruş
+        opacity: 0.4,
+        scaleX: 1.2, // Işık vurdukça uzasın
+        skewX: -55,  // Tam o istediğin yana yatma açısı
+        duration: 2.0,
+        stagger: staggerVal,
+        ease: "power2.out"
       },
-      "-=1.2" // Işık hüzmesiyle eşzamanlı başlasın
+      "-=1.8" // Harflerle neredeyse aynı anda başlasın
     );
+
+    // --- YENİLENMİŞ GÖLGE ADIMI ---
+    // YENİLENMİŞ GÖLGE ADIMI (Hero.tsx içinde en son)
+    tl.to(".char", {
+      filter: "drop-shadow(10px 5px 8px rgba(0, 0, 0, 0.5))",
+      duration: 1.5,
+      stagger: 0.1,
+      ease: "sine.out" // Daha yumuşak bir geçiş
+    }, "+=0.2"); // Cast shadow (uzun gölge) bittikten kısa bir süre sonra başlasın
 
     tlRef.current = tl;
   }, { scope: containerRef });
