@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import defaultImage from "@/assets/images/piano/webp/cem-altun-piano-09.webp";
+import defaultImage from "@/assets/images/piano/webp/cem-altun-piano-10.webp";
 
 // Yeni Bileşenler
 import HeroLoader from "../HeroLoader";
@@ -127,7 +127,7 @@ const Hero = ({ active }: HeroProps) => {
           <div className="shutter-top absolute top-0 left-0 w-full h-1/2 bg-white origin-top" />
           <div className="shutter-bottom absolute bottom-0 left-0 w-full h-1/2 bg-white origin-bottom" />
         </div>
-        <img src={defaultImage} alt="Cem Altun" className="w-full h-full object-cover" />
+        <img src={defaultImage} alt="Cem Altun" className="w-full h-full object-cover grayscale-[50%]" />
 
         {/* LENS SWEEP EFECT */}
         <div

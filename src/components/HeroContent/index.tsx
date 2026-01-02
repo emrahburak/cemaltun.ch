@@ -18,12 +18,13 @@ const HeroContent = forwardRef<HTMLDivElement>((_, ref) => {
         />
 
         {/* ANA BAŞLIK: Stagger ve Gölge burada devreye giriyor */}
+        {/* ANA BAŞLIK: justify-center ve flex-wrap eklendi */}
         <RevisedText
           text="CEM ALTUN"
           as="h1"
           stagger
           charShadow
-          className="font-bodoni-moda text-5xl md:text-8xl lg:text-9xl font-bold tracking-tighter uppercase"
+          className="font-urbanist text-5xl md:text-8xl lg:text-9xl font-bold tracking-tighter uppercase justify-center flex-wrap"
         />
 
         {/* ALT BİLGİ: İki ayrı RevisedText veya bütünsel kullanım */}
