@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom"; // Link ve location eklendi
 import gsap from "gsap";
+import RevisedText from "../RevisedText";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -72,34 +73,30 @@ const Sidebar = () => {
         {/* Menü Linkleri */}
         <nav className="mt-20">
           <ul ref={menuItemsRef} className="space-y-8">
-            {navLinks.map((link) => (
-              <li key={link.id} className="overflow-hidden">
-                <Link
-                  to={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className={`text-4xl md:text-5xl font-isidora font-light hover:italic transition-all duration-300 block origin-left capitalize
-                    ${location.hash === `#${link.id}` ? "italic opacity-100" : "opacity-70 hover:opacity-100"}`}
-                >
-                  {t(`navbar.${link.id}`)}
-                </Link>
-              </li>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = location.hash === `#${link.id}`;
+
+              return (
+                <li key={link.id} className="overflow-visible"> {/* overflow-hidden yerine visible yaptık veya pb ekledik */}
+                  <RevisedText
+                    as={Link}
+                    to={link.path}
+                    onClick={() => setIsOpen(false)}
+                    text={t(`navbar.${link.id}`)}
+                    hoverUnderline={true}
+                    // pb-2 ekleyerek çizgiye yer açtık:
+                    className={`text-4xl md:text-5xl font-isidora font-light block origin-left capitalize transition-all duration-300 pb-2
+              ${isActive ? "opacity-100" : "opacity-70 hover:opacity-100"}`}
+                  />
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
         {/* Alt Kısım: Dil Seçici ve Footer */}
         <div className="border-t border-white/20 pt-10">
-          {/* <div className="flex gap-4 mb-6 text-lg font-manrope tracking-widest uppercase"> */}
-          {/*   {availableLanguages.map((lng) => ( */}
-          {/*     <button */}
-          {/*       key={lng} */}
-          {/*       onClick={() => i18n.changeLanguage(lng)} */}
-          {/*       className={`transition-opacity duration-300 ${i18n.language === lng ? "opacity-100 font-bold" : "opacity-40 hover:opacity-100"}`} */}
-          {/*     > */}
-          {/*       {lng} */}
-          {/*     </button> */}
-          {/*   ))} */}
-          {/* </div> */}
+
           <p className="text-[10px] opacity-40 tracking-[0.3em] uppercase">
             © {new Date().getFullYear()} Cem Altun
           </p>

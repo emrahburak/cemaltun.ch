@@ -9,6 +9,7 @@ import HeroContent from "../HeroContent";
 import { useTranslation } from "react-i18next";
 
 import "./style.css"
+import RevisedText from "../RevisedText";
 
 interface HeroProps {
   active?: boolean;
@@ -169,22 +170,18 @@ const Hero = ({ active }: HeroProps) => {
         </div>
       </div>
       {/* 4. CONTACT EMAIL (Left Bottom - As requested by client) */}
+      {/* 4. CONTACT EMAIL */}
       <div
-        // DEĞİŞİKLİK 1: Başlangıç opaklığı opacity-80 yapıldı (Daha aydınlık)
         className={`absolute bottom-10 left-6 md:left-12 z-40 transition-all duration-1000 mix-blend-difference hidden md:block ${isRevealed && active ? 'opacity-80 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
       >
-        <a
+        <RevisedText
+          text="info@cemaltun.ch"
+          as="a"
           href="mailto:info@cemaltun.ch"
-          // DEĞİŞİKLİK 2: text-xs (daha büyük), font-bold (daha belirgin), tracking-[0.3em] (daha tok)
-          className="font-manrope text-xs font-bold tracking-[0.3em] uppercase text-white hover:opacity-100 transition-opacity block group"
-        >
-          <span className="inline-block transition-transform duration-500 group-hover:-translate-y-1">
-            info@cemaltun.ch
-          </span>
-          {/* Altındaki çizgi de daha parlak */}
-          <div className="w-0 h-[1px] bg-white group-hover:w-full transition-all duration-700" />
-        </a>
+          hoverUnderline
+          className="font-manrope text-xs font-bold tracking-[0.3em] uppercase text-white"
+        />
       </div>
 
     </section>
