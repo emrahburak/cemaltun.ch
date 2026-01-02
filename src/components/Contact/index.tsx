@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Link } from "react-router-dom";
+import RevisedText from "../RevisedText";
 
 interface ContactProps {
   active?: boolean;
@@ -103,31 +104,38 @@ const Contact = ({ active }: ContactProps) => {
         {/* Sosyal Linkler */}
         <div className="flex flex-wrap justify-center lg:justify-start gap-x-8 gap-y-4">
           {links.map((link) => (
-            <a
+            <RevisedText
               key={link.name}
+              as="a" // Normal anchor etiketi olarak kullanıyoruz
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[0.6rem] font-manrope font-bold tracking-[0.25em] uppercase text-black opacity-40 hover:opacity-100 transition-opacity duration-300"
-            >
-              {link.name}
-            </a>
+              text={link.name}
+              hoverUnderline={true}
+              // pb-1 ekleyerek alt çizgiye nefes alma alanı bıraktık
+              className="text-[0.6rem] font-manrope font-bold tracking-[0.25em] uppercase text-black opacity-40 hover:opacity-100 pb-1"
+            />
           ))}
         </div>
 
         {/* Copyright ve Privacy */}
-        <div className="flex flex-col gap-2 text-center lg:text-right">
-          <Link
+        {/* items-center (Mobil için orta) ve lg:items-end (Masaüstü için sağ) eklendi */}
+        <div className="flex flex-col gap-2 items-center lg:items-end text-center lg:text-right">
+
+          <RevisedText
+            as={Link}
             to="/privacy"
-            className="text-[0.55rem] font-manrope font-bold tracking-[0.2em] uppercase text-black opacity-20 hover:opacity-60 transition-opacity duration-300"
-          >
-            {t('privacy.title')}
-          </Link>
+            text={t('privacy.title')}
+            hoverUnderline={true}
+            // w-fit içeride olduğu için burada kutuyu sağa itmemiz yeterli
+            className="text-[0.55rem] font-manrope font-bold tracking-[0.2em] uppercase text-black opacity-20 hover:opacity-60 pb-1"
+          />
 
           <div className="text-[0.6rem] font-manrope opacity-30 tracking-[0.2em] uppercase text-black leading-relaxed">
             © {new Date().getFullYear()} Cem Altun. <br />
             {t('contact.copyright')}
           </div>
+
         </div>
       </div>
     </section>
