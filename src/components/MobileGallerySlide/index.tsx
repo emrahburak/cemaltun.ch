@@ -1,9 +1,6 @@
 import { useRef, useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation, Autoplay } from 'swiper/modules';
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
 
 // Swiper Styles
 import 'swiper/css';
@@ -22,55 +19,23 @@ interface GalleryProps {
   active?: boolean;
 }
 
-export default function GallerySlider({ data, active }: GalleryProps) {
-  const { t } = useTranslation();
-  const quoteText = t("gallery.quote");
-
+export default function MobileGallerySlide({ data, active }: GalleryProps) {
   const [index, setIndex] = useState(-1);
   const [swiperInstance, setSwiperInstance] = useState<any>(null);
 
-  // Butonları Swiper'a bağlamak için state (Ref yerine bunlar daha sağlıklı çalışır)
   const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
   const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
 
   const mainRef = useRef<HTMLDivElement>(null);
-  const quoteRef = useRef<HTMLDivElement>(null);
-  const quoteTlRef = useRef<gsap.core.Timeline | null>(null);
 
-  // --- NÜKLEER ÇÖZÜM: CAPTURING PHASE BLOCKER ---
-  useEffect(() => {
-    const el = mainRef.current;
-    if (!el) return;
-    const stopGlobalScroll = (e: any) => e.stopImmediatePropagation();
-    el.addEventListener('wheel', stopGlobalScroll, true);
-    el.addEventListener('pointerdown', stopGlobalScroll, true);
-    el.addEventListener('touchstart', stopGlobalScroll, true);
-    return () => {
-      el.removeEventListener('wheel', stopGlobalScroll, true);
-      el.removeEventListener('pointerdown', stopGlobalScroll, true);
-      el.removeEventListener('touchstart', stopGlobalScroll, true);
-    };
-  }, []);
+  // --- ARTIK ETKİLEŞİMİ TAMAMEN TARAYICIYA BIRAKIYORUZ ---
+  // Karmaşık useEffect'leri ve stopPropagation'ları sildik.
+  // Bu sayede tarayıcı dikey kaydırmayı (scroll) engellemez.
 
-  // --- QUOTE ANİMASYONU ---
-  useGSAP(() => {
-    if (quoteRef.current) {
-      const tl = gsap.timeline({ paused: true });
-      tl.fromTo(quoteRef.current,
-        { opacity: 0, y: 20, filter: "blur(10px)" },
-        { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, ease: "expo.out" }
-      );
-      quoteTlRef.current = tl;
-    }
-  }, { scope: mainRef, dependencies: [quoteText] });
-
-  // --- ACTIVE DURUMU ---
   useEffect(() => {
     if (active) {
-      quoteTlRef.current?.play();
       swiperInstance?.autoplay?.start();
     } else {
-      quoteTlRef.current?.reverse();
       swiperInstance?.autoplay?.stop();
     }
   }, [active, swiperInstance]);
@@ -78,8 +43,8 @@ export default function GallerySlider({ data, active }: GalleryProps) {
   return (
     <div
       ref={mainRef}
-      data-scroll-ignore="true"
-      className="osmo-gallery-section w-full h-full bg-black relative flex items-center overflow-hidden touch-none pointer-events-auto"
+      // touch-pan-y: Dikey kaydırmaya (scroll) izin ver, gerisini tarayıcı halletsin.
+      className="osmo-gallery-section w-full h-full bg-black relative flex items-center overflow-hidden touch-pan-y pointer-events-auto"
     >
       <Lightbox
         index={index}
@@ -90,14 +55,6 @@ export default function GallerySlider({ data, active }: GalleryProps) {
 
       <div className="w-full relative z-10 flex flex-col gap-8 md:gap-12">
 
-        {/* QUOTE BÖLÜMÜ */}
-        {/* <div className="px-12 md:px-24 max-w-[35em]"> */}
-        {/*   <div ref={quoteRef} className="font-sollarish text-[0.8em] md:text-[0.6em] uppercase italic text-white/80 tracking-[0.2em]"> */}
-        {/*     {quoteText} */}
-        {/*   </div> */}
-        {/* </div> */}
-
-        {/* SWIPER SLIDER */}
         <Swiper
           onSwiper={setSwiperInstance}
           modules={[Pagination, Navigation, Autoplay]}
@@ -105,9 +62,10 @@ export default function GallerySlider({ data, active }: GalleryProps) {
             prevEl,
             nextEl,
           }}
+          // --- KRİTİK AYARLAR ---
+          allowTouchMove={false} // MOBİLDE PARMAKLA KAYDIRMAYI (GRAB) KAPATTIK
           nested={true}
-          touchMoveStopPropagation={true}
-          grabCursor={true}
+          // ---------------------
           slidesPerView={1.2}
           spaceBetween={30}
           centeredSlides={true}
@@ -139,7 +97,7 @@ export default function GallerySlider({ data, active }: GalleryProps) {
           ))}
         </Swiper>
 
-        {/* --- CUSTOM NAVIGATION BUTTONS (SWIPER ALTINDA) --- */}
+        {/* --- CUSTOM NAVIGATION BUTTONS --- */}
         <div className="mg-reveal flex flex-row gap-12 mt-4 items-center justify-center relative z-50">
           <button
             ref={setPrevEl}
@@ -176,7 +134,6 @@ export default function GallerySlider({ data, active }: GalleryProps) {
 
       </div>
 
-      {/* Arka Plan Dekorasyonu */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-black to-transparent opacity-90" />
         <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-black to-transparent opacity-90" />
