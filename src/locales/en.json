@@ -63,5 +63,11 @@
         "content": "You have the right to access, correct, or request the deletion of your personal data. For inquiries, please contact us via the contact form."
       }
     }
+  },
+  "notFound": {
+    "title": "404 - Page Not Found",
+    "heading": "Page Not Found",
+    "description": "The content you are looking for may have been moved, deleted, or the address may have changed. Please return to the home page.",
+    "button": "BACK TO HOME"
   }
 }
