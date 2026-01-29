@@ -5,6 +5,7 @@ import Privacy from './pages/privacy';
 import ScrollToTop from './utils/ScrollTop';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
+import NotFound from './pages/notFound';
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -36,7 +37,7 @@ function App() {
           <Route path="/privacy" element={<Privacy />} />
 
           {/* Olmayan bir sayfaya girilirse ana sayfaya atabiliriz veya 404 yapabiliriz */}
-          <Route path="*" element={<Home />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
 

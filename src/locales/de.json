@@ -62,5 +62,11 @@
         "content": "Sie haben das Recht auf Auskunft, Berichtigung oder Löschung Ihrer personenbezogenen Daten. Bei Fragen wenden Sie sich bitte über das Kontaktformular an uns."
       }
     }
+  },
+  "notFound": {
+    "title": "404 - Seite nicht gefunden",
+    "heading": "Seite nicht gefunden",
+    "description": "Der von Ihnen gesuchte Inhalt wurde stattdessen verschoben, gelöscht oder die Adresse hat sich geändert. Bitte kehren Sie zur Startseite zurück.",
+    "button": "ZUR STARTSEITE"
   }
 }

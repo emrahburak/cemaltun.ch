@@ -9,12 +9,14 @@ interface ContactProps {
   active?: boolean;
 }
 
+
 const Contact = ({ active }: ContactProps) => {
   const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
 
   const email = "info@cemaltun.ch";
+  const timeRight = "https://timerightproduction.org/"
   const locationText = t('contact.location');
 
   const links = [
@@ -94,7 +96,19 @@ const Contact = ({ active }: ContactProps) => {
         {/* Lokasyon Bloğu */}
         <p className="contact-reveal font-manrope opacity-50 pl-1 mt-4 text-black text-lg tracking-tight">
           {locationText}
+
         </p>
+
+        <RevisedText
+          as="a" // Normal anchor etiketi olarak kullanıyoruz
+          href={timeRight}
+          target="_blank"
+          rel="noopener noreferrer"
+          text="TIME RIGHT PRODUCTION"
+          hoverUnderline={true}
+          // pb-1 ekleyerek alt çizgiye nefes alma alanı bıraktık
+          className="text-[1rem] font-manrope font-bold tracking-[0.25em] uppercase text-black opacity-40 hover:opacity-100 pb-1"
+        />
       </div>
 
       {/* ALT KISIM (Footer) */}

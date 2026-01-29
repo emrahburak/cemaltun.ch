@@ -62,5 +62,11 @@
         "content": "Kişisel verilerinize erişme, düzeltme veya silinmesini talep etme hakkına sahipsiniz. Sorularınız için iletişim formu üzerinden bizimle iletişime geçebilirsiniz."
       }
     }
+  },
+  "notFound": {
+    "title": "404 - Sayfa Bulunamadı",
+    "heading": "Aradığınız Sayfaya Ulaşılamadı",
+    "description": "Aradığınız içerik taşınmış, silinmiş veya adresi değişmiş olabilir. Lütfen ana sayfaya dönerek devam edin.",
+    "button": "ANA SAYFAYA DÖN"
   }
 }
