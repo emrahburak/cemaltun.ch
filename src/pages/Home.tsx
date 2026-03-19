@@ -9,6 +9,8 @@ import Hero from "../components/Hero";
 import Sidebar from "../components/Sidebar";
 import DesktopWorks from "../components/DesktopWorks";
 import MobileWorks from "../components/MobileWorks";
+import DesktopConcert from "../components/DesktopConcert";
+import MobileConcert from "../components/MobileConcert";
 import Contact from "../components/Contact";
 import GallerySlide from "../components/GallerySlide";
 import MobileGallerySlide from "../components/MobileGallerySlide";
@@ -147,20 +149,30 @@ const Home = () => {
         </div>
       </div>
 
-      {/* 3: Gallery */}
-      <div ref={el => { sectionsRef.current[3] = el; }} className="absolute inset-0 overflow-hidden" id="gallery">
-
+      {/* 3: Concert */}
+      <div ref={el => { sectionsRef.current[3] = el; }} className="absolute inset-0 overflow-hidden" id="concert">
         <div className="w-full h-full lg:block hidden">
-          <GallerySlide data={galleryData} active={activeIndex === 3} />
+          <DesktopConcert active={activeIndex === 3} />
         </div>
         <div className="w-full h-full lg:hidden block">
-          <MobileGallerySlide data={galleryData} active={activeIndex === 3} />
+          <MobileConcert active={activeIndex === 3} />
         </div>
       </div>
 
-      {/* 4: Contact */}
-      <div ref={el => { sectionsRef.current[4] = el; }} className="absolute inset-0" id="contact">
-        <Contact active={activeIndex === 4} />
+      {/* 4: Gallery */}
+      <div ref={el => { sectionsRef.current[4] = el; }} className="absolute inset-0 overflow-hidden" id="gallery">
+
+        <div className="w-full h-full lg:block hidden">
+          <GallerySlide data={galleryData} active={activeIndex === 4} />
+        </div>
+        <div className="w-full h-full lg:hidden block">
+          <MobileGallerySlide data={galleryData} active={activeIndex === 4} />
+        </div>
+      </div>
+
+      {/* 5: Contact */}
+      <div ref={el => { sectionsRef.current[5] = el; }} className="absolute inset-0" id="contact">
+        <Contact active={activeIndex === 5} />
       </div>
     </div>
   );

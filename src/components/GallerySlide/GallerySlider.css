@@ -68,8 +68,8 @@
   position: absolute;
   width: 0.7em;
   height: 0.7em;
-  border-top: 1px solid #efeeec;
-  border-left: 1px solid #efeeec;
+  border: solid #efeeec;
+  border-width: 0;
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -77,24 +77,25 @@
 .top-left {
   top: 0;
   left: 0;
+  border-width: 1px 0 0 1px;
 }
 
 .top-right {
   top: 0;
   right: 0;
-  transform: rotate(90deg);
+  border-width: 1px 1px 0 0;
 }
 
 .bottom-left {
   bottom: 0;
   left: 0;
-  transform: rotate(-90deg);
+  border-width: 0 0 1px 1px;
 }
 
 .bottom-right {
   bottom: 0;
   right: 0;
-  transform: rotate(180deg);
+  border-width: 0 1px 1px 0;
 }
 
 /* Hover'da Köşelerin Esnemesi */
@@ -103,15 +104,15 @@
 }
 
 .osmo-button:hover .overlay-corner.top-right {
-  transform: rotate(90deg) translate(-2px, -2px);
+  transform: translate(2px, -2px);
 }
 
 .osmo-button:hover .overlay-corner.bottom-left {
-  transform: rotate(-90deg) translate(-2px, -2px);
+  transform: translate(-2px, 2px);
 }
 
 .osmo-button:hover .overlay-corner.bottom-right {
-  transform: rotate(180deg) translate(-2px, -2px);
+  transform: translate(2px, 2px);
 }
 
 /* --- SLAYT EFEKTLERİ --- */

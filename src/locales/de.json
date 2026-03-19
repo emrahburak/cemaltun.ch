@@ -68,5 +68,9 @@
     "heading": "Seite nicht gefunden",
     "description": "Der von Ihnen gesuchte Inhalt wurde stattdessen verschoben, gelöscht oder die Adresse hat sich geändert. Bitte kehren Sie zur Startseite zurück.",
     "button": "ZUR STARTSEITE"
+  },
+  "concert": {
+    "title": "Live-Auftritt",
+    "subtitle": "Sehen Sie mein neuestes Konzert"
   }
 }

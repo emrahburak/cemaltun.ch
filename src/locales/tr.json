@@ -68,5 +68,9 @@
     "heading": "Aradığınız Sayfaya Ulaşılamadı",
     "description": "Aradığınız içerik taşınmış, silinmiş veya adresi değişmiş olabilir. Lütfen ana sayfaya dönerek devam edin.",
     "button": "ANA SAYFAYA DÖN"
+  },
+  "concert": {
+    "title": "Canlı Performans",
+    "subtitle": "En Son Konserimi İzle"
   }
 }

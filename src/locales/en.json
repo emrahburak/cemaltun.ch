@@ -20,7 +20,6 @@
     "zurich": "Zürich",
     "scrollHint": "Scroll or Drag"
   },
-
   "about": {
     "read_more": "READ FULL STORY",
     "title": "About Cem",
@@ -69,5 +68,9 @@
     "heading": "Page Not Found",
     "description": "The content you are looking for may have been moved, deleted, or the address may have changed. Please return to the home page.",
     "button": "BACK TO HOME"
+  },
+  "concert": {
+    "title": "Live Performance",
+    "subtitle": "Watch My Latest Concert"
   }
 }
