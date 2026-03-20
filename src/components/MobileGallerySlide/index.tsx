@@ -44,7 +44,7 @@ export default function MobileGallerySlide({ data, active }: GalleryProps) {
     <div
       ref={mainRef}
       // touch-pan-y: Dikey kaydırmaya (scroll) izin ver, gerisini tarayıcı halletsin.
-      className="osmo-gallery-section w-full h-full bg-black relative flex items-center overflow-hidden touch-pan-y pointer-events-auto"
+      className="osmo-gallery-section w-full h-full bg-black relative flex items-center overflow-hidden touch-pan-y pointer-events-none"
     >
       <Lightbox
         index={index}
@@ -53,7 +53,7 @@ export default function MobileGallerySlide({ data, active }: GalleryProps) {
         slides={data.map((item) => ({ src: item.img, alt: item.title }))}
       />
 
-      <div className="w-full relative z-10 flex flex-col gap-8 md:gap-12">
+      <div className="w-full relative z-10 flex flex-col gap-8 md:gap-12 pointer-events-auto">
 
         <Swiper
           onSwiper={setSwiperInstance}

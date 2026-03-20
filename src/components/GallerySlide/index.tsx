@@ -49,7 +49,7 @@ export default function GallerySlider({ data, active }: GalleryProps) {
   }, [active, swiperInstance]);
 
   return (
-    <div ref={mainRef} className="osmo-gallery-section w-full h-full bg-black relative flex items-center justify-center overflow-hidden">
+    <div ref={mainRef} className="osmo-gallery-section w-full h-full bg-black relative flex items-center justify-center overflow-hidden pointer-events-none">
 
       <Lightbox
         index={index}
@@ -58,7 +58,7 @@ export default function GallerySlider({ data, active }: GalleryProps) {
         slides={data.map((item) => ({ src: item.img, alt: item.title }))}
       />
 
-      <div className="w-full relative z-10 flex flex-col gap-2 items-center">
+      <div className="w-full relative z-10 flex flex-col gap-2 items-center pointer-events-auto">
 
         {/* SWIPER */}
         <Swiper

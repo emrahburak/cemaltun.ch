@@ -32,77 +32,74 @@ const Home = () => {
   const currentIndex = useRef(0); // GSAP'in takibi için (Ref her zaman güncel kalır)
   const animating = useRef(false);
   const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const sectionIds = ["hero", "about", "works", "gallery", "contact"];
+  const sectionIds = ["hero", "about", "works", "concert", "gallery", "contact"];
 
-  // --- ANA GEÇİŞ FONKSİYONU (TAM HALİ) ---
+  // --- ANA GEÇİŞ FONKSİYONU ---
   const gotoSection = (index: number, direction: number) => {
-    // Sınır kontrolü ve animasyon kilidi
     if (animating.current || index < 0 || index >= sectionIds.length) return;
 
     animating.current = true;
-    const isNext = direction > 0;
     const currentSection = sectionsRef.current[currentIndex.current];
     const nextSection = sectionsRef.current[index];
 
     const tl = gsap.timeline({
       onComplete: () => {
         animating.current = false;
-        currentIndex.current = index; // Ref'i güncelle (lojik akış)
-        setActiveIndex(index); // State'i güncelle (React Re-render - Alt bileşenleri tetikler)
+        currentIndex.current = index;
+        setActiveIndex(index);
+        // Temizlik: Aktif olmayan tüm bölümleri arkaya at ve gizle (Performans ve çakışma için)
+        sectionsRef.current.forEach((section, i) => {
+          if (section && i !== index) {
+            gsap.set(section, { autoAlpha: 0, zIndex: 0 });
+          }
+        });
       }
     });
 
-    if (isNext) {
-      // İLERİ GEÇİŞ (Yeni perde alttan gelir)
-      tl.set(nextSection, { zIndex: 10, autoAlpha: 1 });
-      tl.fromTo(nextSection,
-        { yPercent: 100, clipPath: "inset(100% 0% 0% 0%)" },
-        { yPercent: 0, clipPath: "inset(0% 0% 0% 0%)", duration: 1.2, ease: "power4.inOut" }
-      );
-      tl.set(currentSection, { autoAlpha: 0, zIndex: 0 }, ">");
-    } else {
-      // GERİ GEÇİŞ (Mevcut perde aşağı iner, altındaki görünür)
-      tl.set(nextSection, { zIndex: 5, autoAlpha: 1, yPercent: 0, clipPath: "inset(0% 0% 0% 0%)" });
-      tl.set(currentSection, { zIndex: 10 });
-      tl.to(currentSection, {
-        yPercent: 100, clipPath: "inset(100% 0% 0% 0%)", duration: 1.2, ease: "power4.inOut"
+    if (direction > 0) {
+      // İLERİ: YENİ BÖLÜM AŞAĞIDAN GELİR
+      gsap.set(nextSection, { yPercent: 100, autoAlpha: 1, zIndex: 10 });
+      tl.to(nextSection, {
+        yPercent: 0,
+        duration: 1.2,
+        ease: "power4.inOut"
       });
-      tl.set(currentSection, { autoAlpha: 0, zIndex: 0 }, ">");
+    } else {
+      // GERİ: MEVCUT BÖLÜM AŞAĞI İNER (ALTTAKİ GÖRÜNÜR)
+      // Önce gelecek olan alt bölümü hazırla (Görünür yap ve tam ekrana yerleştir)
+      gsap.set(nextSection, { yPercent: 0, autoAlpha: 1, zIndex: 5 });
+      // Mevcut üst bölümü aşağı kaydır
+      gsap.set(currentSection, { zIndex: 10 });
+      tl.to(currentSection, {
+        yPercent: 100,
+        duration: 1.2,
+        ease: "power4.inOut"
+      });
     }
   };
 
-  // --- INITIAL SETUP & OBSERVER ---
   useGSAP(() => {
-    gsap.set(sectionsRef.current, {
-      position: "fixed",
-      inset: 0,
-      autoAlpha: 0,
-      zIndex: 0,
-      yPercent: 0
+    // İlk kurulum: Tüm bölümleri hazırla
+    sectionsRef.current.forEach((section, i) => {
+      if (!section) return;
+      gsap.set(section, {
+        position: "fixed",
+        inset: 0,
+        yPercent: i === 0 ? 0 : 100,
+        autoAlpha: i === 0 ? 1 : 0,
+        zIndex: i === 0 ? 10 : 0
+      });
     });
-
-    // Başlangıçta ilk bölümü göster
-    gsap.set(sectionsRef.current[0], { autoAlpha: 1, zIndex: 1 });
 
     const observer = Observer.create({
       target: window,
       type: "wheel,touch,pointer",
-      wheelSpeed: -1.5, // Masaüstü için ters yön düzeltmesi
-      tolerance: 5,
+      wheelSpeed: -1,
+      tolerance: 15,
       dragMinimum: 50,
-
-      onUp: () => {
-        if (!animating.current) gotoSection(currentIndex.current + 1, 1);
-      },
-      onDown: () => {
-        if (!animating.current) gotoSection(currentIndex.current - 1, -1);
-      },
-      onPress: (self) => {
-        if (self.event instanceof MouseEvent && self.event.button === 1) {
-          self.event.preventDefault();
-        }
-      },
-      preventDefault: true
+      onUp: () => !animating.current && gotoSection(currentIndex.current + 1, 1),
+      onDown: () => !animating.current && gotoSection(currentIndex.current - 1, -1),
+      preventDefault: false // Tarayıcı scroll eventlerini tamamen öldürmüyoruz
     });
 
     return () => observer.kill();
@@ -125,12 +122,12 @@ const Home = () => {
       <Langs />
 
       {/* 0: Hero */}
-      <div ref={el => { sectionsRef.current[0] = el; }} className="absolute inset-0" id="hero">
+      <div ref={el => { sectionsRef.current[0] = el; }} className={`absolute inset-0 ${activeIndex === 0 ? "pointer-events-auto" : "pointer-events-none"}`} id="hero">
         <Hero active={activeIndex === 0} />
       </div>
 
       {/* About Section */}
-      <div ref={el => { sectionsRef.current[1] = el; }} className="absolute inset-0 overflow-hidden" id="about">
+      <div ref={el => { sectionsRef.current[1] = el; }} className={`absolute inset-0 overflow-hidden ${activeIndex === 1 ? "pointer-events-auto" : "pointer-events-none"}`} id="about">
         <div className="w-full h-full lg:block hidden">
           <DesktopAbout active={activeIndex === 1} />
         </div>
@@ -140,7 +137,7 @@ const Home = () => {
       </div>
 
       {/* 2: Works */}
-      <div ref={el => { sectionsRef.current[2] = el; }} className="absolute inset-0 overflow-hidden" id="works">
+      <div ref={el => { sectionsRef.current[2] = el; }} className={`absolute inset-0 overflow-hidden ${activeIndex === 2 ? "pointer-events-auto" : "pointer-events-none"}`} id="works">
         <div className="w-full h-full lg:block hidden">
           <DesktopWorks active={activeIndex === 2} />
         </div>
@@ -150,7 +147,7 @@ const Home = () => {
       </div>
 
       {/* 3: Concert */}
-      <div ref={el => { sectionsRef.current[3] = el; }} className="absolute inset-0 overflow-hidden" id="concert">
+      <div ref={el => { sectionsRef.current[3] = el; }} className={`absolute inset-0 overflow-hidden ${activeIndex === 3 ? "pointer-events-auto" : "pointer-events-none"}`} id="concert">
         <div className="w-full h-full lg:block hidden">
           <DesktopConcert active={activeIndex === 3} />
         </div>
@@ -160,7 +157,7 @@ const Home = () => {
       </div>
 
       {/* 4: Gallery */}
-      <div ref={el => { sectionsRef.current[4] = el; }} className="absolute inset-0 overflow-hidden" id="gallery">
+      <div ref={el => { sectionsRef.current[4] = el; }} className={`absolute inset-0 overflow-hidden ${activeIndex === 4 ? "pointer-events-auto" : "pointer-events-none"}`} id="gallery">
 
         <div className="w-full h-full lg:block hidden">
           <GallerySlide data={galleryData} active={activeIndex === 4} />
@@ -171,7 +168,7 @@ const Home = () => {
       </div>
 
       {/* 5: Contact */}
-      <div ref={el => { sectionsRef.current[5] = el; }} className="absolute inset-0" id="contact">
+      <div ref={el => { sectionsRef.current[5] = el; }} className={`absolute inset-0 ${activeIndex === 5 ? "pointer-events-auto" : "pointer-events-none"}`} id="contact">
         <Contact active={activeIndex === 5} />
       </div>
     </div>
