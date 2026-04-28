@@ -6,11 +6,13 @@ import type { ConcertVideo } from "../data/concert";
 interface ConcertCardStackProps {
   videos: ConcertVideo[];
   isMobile?: boolean;
+  framerActive?: boolean;
 }
 
 export default function ConcertCardStack({
   videos,
   isMobile = false,
+  framerActive = false,
 }: ConcertCardStackProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -53,6 +55,10 @@ export default function ConcertCardStack({
     ? "text-sm text-gray-500 leading-relaxed max-w-lg mx-auto"
     : "text-base text-gray-500 leading-relaxed max-w-2xl mx-auto";
 
+  const titleInitial = framerActive ? { opacity: 0, y: -15 } : false;
+  const videoInitial = framerActive ? { opacity: 0, scale: 0.97 } : false;
+  const descInitial = framerActive ? { opacity: 0, y: 8 } : false;
+
   return (
     <div className="w-full h-full flex flex-col items-center justify-center relative overflow-hidden bg-white">
       <div className="flex flex-col items-center w-full">
@@ -61,7 +67,7 @@ export default function ConcertCardStack({
           <AnimatePresence mode="wait">
             <motion.div
               key={`title-${currentIndex}`}
-              initial={{ opacity: 0, y: -15 }}
+              initial={titleInitial}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.35 }}
@@ -77,7 +83,7 @@ export default function ConcertCardStack({
             <motion.div
               key={`video-${currentIndex}`}
               className="relative aspect-video rounded-xl overflow-hidden shadow-2xl bg-gray-100 border border-gray-200"
-              initial={{ opacity: 0, scale: 0.97 }}
+              initial={videoInitial}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.97 }}
               transition={{ duration: 0.45, ease: "easeInOut" }}
@@ -122,7 +128,7 @@ export default function ConcertCardStack({
           <AnimatePresence mode="wait">
             <motion.div
               key={`desc-${currentIndex}`}
-              initial={{ opacity: 0, y: 8 }}
+              initial={descInitial}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 5 }}
               transition={{ duration: 0.35, delay: 0.05 }}

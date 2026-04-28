@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import ConcertCardStack from './ConcertCardStack';
@@ -11,6 +11,7 @@ interface DesktopConcertProps {
 const DesktopConcert: React.FC<DesktopConcertProps> = ({ active }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const [framerActive, setFramerActive] = useState(false);
 
   useGSAP(() => {
     if (!containerRef.current) return;
@@ -51,12 +52,15 @@ const DesktopConcert: React.FC<DesktopConcertProps> = ({ active }) => {
       "-=0.3"
     );
 
+    tl.call(() => setFramerActive(true));
+
     tlRef.current = tl;
   }, { scope: containerRef });
 
   useEffect(() => {
     if (active) {
-      tlRef.current?.play();
+      setFramerActive(false);
+      tlRef.current?.restart();
     } else {
       tlRef.current?.reverse();
     }
@@ -65,7 +69,11 @@ const DesktopConcert: React.FC<DesktopConcertProps> = ({ active }) => {
   return (
     <div ref={containerRef} className="w-full h-full flex flex-col items-center justify-center">
       <div className="concert-wrapper w-full h-full">
-        <ConcertCardStack videos={concertVideos} isMobile={false} />
+        <ConcertCardStack
+          videos={concertVideos}
+          isMobile={false}
+          framerActive={framerActive}
+        />
       </div>
     </div>
   );
