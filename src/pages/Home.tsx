@@ -11,8 +11,6 @@ import DesktopWorks from "../components/DesktopWorks";
 import MobileWorks from "../components/MobileWorks";
 import DesktopVideos from "../components/DesktopVideos";
 import MobileVideos from "../components/MobileVideos";
-import DesktopConcert from "../components/DesktopConcert";
-import MobileConcert from "../components/MobileConcert";
 import Contact from "../components/Contact";
 import GallerySlide from "../components/GallerySlide";
 import MobileGallerySlide from "../components/MobileGallerySlide";
@@ -34,7 +32,7 @@ const Home = () => {
   const currentIndex = useRef(0); // GSAP'in takibi için (Ref her zaman güncel kalır)
   const animating = useRef(false);
   const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const sectionIds = ["hero", "about", "works", "videos", "concert", "gallery", "contact"];
+  const sectionIds = ["hero", "about", "works", "videos", "gallery", "contact"];
 
   // --- ANA GEÇİŞ FONKSİYONU ---
   const gotoSection = (index: number, direction: number) => {
@@ -158,30 +156,20 @@ const Home = () => {
         </div>
       </div>
 
-      {/* 4: Concert */}
-      <div ref={el => { sectionsRef.current[4] = el; }} className={`absolute inset-0 overflow-hidden ${activeIndex === 4 ? "pointer-events-auto" : "pointer-events-none"}`} id="concert">
+      {/* 4: Gallery */}
+      <div ref={el => { sectionsRef.current[4] = el; }} className={`absolute inset-0 overflow-hidden ${activeIndex === 4 ? "pointer-events-auto" : "pointer-events-none"}`} id="gallery">
+
         <div className="w-full h-full lg:block hidden">
-          <DesktopConcert active={activeIndex === 4} />
+          <GallerySlide data={galleryData} active={activeIndex === 4} />
         </div>
         <div className="w-full h-full lg:hidden block">
-          <MobileConcert active={activeIndex === 4} />
+          <MobileGallerySlide data={galleryData} active={activeIndex === 4} />
         </div>
       </div>
 
-      {/* 5: Gallery */}
-      <div ref={el => { sectionsRef.current[5] = el; }} className={`absolute inset-0 overflow-hidden ${activeIndex === 5 ? "pointer-events-auto" : "pointer-events-none"}`} id="gallery">
-
-        <div className="w-full h-full lg:block hidden">
-          <GallerySlide data={galleryData} active={activeIndex === 5} />
-        </div>
-        <div className="w-full h-full lg:hidden block">
-          <MobileGallerySlide data={galleryData} active={activeIndex === 5} />
-        </div>
-      </div>
-
-      {/* 6: Contact */}
-      <div ref={el => { sectionsRef.current[6] = el; }} className={`absolute inset-0 ${activeIndex === 6 ? "pointer-events-auto" : "pointer-events-none"}`} id="contact">
-        <Contact active={activeIndex === 6} />
+      {/* 5: Contact */}
+      <div ref={el => { sectionsRef.current[5] = el; }} className={`absolute inset-0 ${activeIndex === 5 ? "pointer-events-auto" : "pointer-events-none"}`} id="contact">
+        <Contact active={activeIndex === 5} />
       </div>
     </div>
   );

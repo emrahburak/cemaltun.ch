@@ -70,9 +70,5 @@
     "heading": "Page Not Found",
     "description": "The content you are looking for may have been moved, deleted, or the address may have changed. Please return to the home page.",
     "button": "BACK TO HOME"
-  },
-  "concert": {
-    "title": "Concerts",
-    "subtitle": "Watch My Performances"
   }
 }

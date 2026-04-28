@@ -21,7 +21,6 @@ const Sidebar = () => {
     { id: 'about', path: '/#about' },
     { id: 'works', path: '/#works' },
     { id: 'videos', path: '/#videos' },
-    { id: 'concert', path: '/#concert' },
     { id: 'gallery', path: '/#gallery' },
     { id: 'contact', path: '/#contact' },
   ];
