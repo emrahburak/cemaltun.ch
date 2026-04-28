@@ -55,24 +55,24 @@ export default function ConcertCardStack({
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center relative overflow-hidden bg-white">
-      {/* Main Video Area */}
       <div className="flex flex-col items-center w-full">
         {/* Title */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`title-${currentIndex}`}
-            className="text-center"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.4 }}
-          >
-            <h2 className={titleClass}>{currentVideo.title}</h2>
-          </motion.div>
-        </AnimatePresence>
+        <div className="concert-title text-center">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`title-${currentIndex}`}
+              initial={{ opacity: 0, y: -15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.35 }}
+            >
+              <h2 className={titleClass}>{currentVideo.title}</h2>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
         {/* Video Player */}
-        <div className={videoContainerClass}>
+        <div className={`concert-video ${videoContainerClass}`}>
           <AnimatePresence mode="wait">
             <motion.div
               key={`video-${currentIndex}`}
@@ -80,7 +80,7 @@ export default function ConcertCardStack({
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.97 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
+              transition={{ duration: 0.45, ease: "easeInOut" }}
             >
               {isPlaying ? (
                 <iframe
@@ -118,21 +118,22 @@ export default function ConcertCardStack({
         </div>
 
         {/* Description */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`desc-${currentIndex}`}
-            className="text-center mt-5"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 5 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-          >
-            <p className={descClass}>{currentVideo.description}</p>
-          </motion.div>
-        </AnimatePresence>
+        <div className="concert-description text-center mt-5">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`desc-${currentIndex}`}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 5 }}
+              transition={{ duration: 0.35, delay: 0.05 }}
+            >
+              <p className={descClass}>{currentVideo.description}</p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
         {/* Navigation Controls */}
-        <div className="flex items-center gap-4 mt-6">
+        <div className="concert-controls flex items-center gap-4 mt-6">
           <motion.button
             onClick={goToPrev}
             disabled={currentIndex === 0}
@@ -170,7 +171,6 @@ export default function ConcertCardStack({
           </motion.button>
         </div>
       </div>
-
     </div>
   );
 }
