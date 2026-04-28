@@ -1,6 +1,8 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import ConcertCardStack from "../ConcertCardStack";
+import { concertVideos } from "../../data/concert";
 
 interface MobileVideosProps {
   active: boolean;
@@ -9,6 +11,7 @@ interface MobileVideosProps {
 const MobileVideos = ({ active }: MobileVideosProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const [framerActive, setFramerActive] = useState(false);
 
   useGSAP(() => {
     if (!containerRef.current) return;
@@ -28,12 +31,15 @@ const MobileVideos = ({ active }: MobileVideosProps) => {
       }
     );
 
+    tl.call(() => setFramerActive(true));
+
     tlRef.current = tl;
   }, { scope: containerRef });
 
   useEffect(() => {
     if (active) {
-      tlRef.current?.play();
+      setFramerActive(false);
+      tlRef.current?.restart();
     } else {
       tlRef.current?.reverse();
     }
@@ -44,12 +50,12 @@ const MobileVideos = ({ active }: MobileVideosProps) => {
       ref={containerRef}
       className="w-full h-full flex items-center justify-center bg-white px-6 overflow-hidden"
     >
-      <div className="max-w-full w-full">
-        <div className="videos-reveal">
-          <h2 className="text-[10px] font-manrope font-bold mb-4 tracking-[0.5em] uppercase opacity-40 text-black">
-            Videos
-          </h2>
-        </div>
+      <div className="videos-reveal max-w-full w-full h-full">
+        <ConcertCardStack
+          videos={concertVideos}
+          isMobile={true}
+          framerActive={framerActive}
+        />
       </div>
     </div>
   );
