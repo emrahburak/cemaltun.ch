@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import type { ConcertVideo } from "../data/concert";
@@ -14,6 +15,7 @@ export default function ConcertCardStack({
   isMobile = false,
   framerActive = false,
 }: ConcertCardStackProps) {
+  const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -133,7 +135,7 @@ export default function ConcertCardStack({
               exit={{ opacity: 0, y: 5 }}
               transition={{ duration: 0.35, delay: 0.05 }}
             >
-              <p className={descClass}>{currentVideo.description}</p>
+              <p className={descClass}>{t(currentVideo.descriptionKey)}</p>
             </motion.div>
           </AnimatePresence>
         </div>

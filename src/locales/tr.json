@@ -70,5 +70,10 @@
     "heading": "Aradığınız Sayfaya Ulaşılamadı",
     "description": "Aradığınız içerik taşınmış, silinmiş veya adresi değişmiş olabilir. Lütfen ana sayfaya dönerek devam edin.",
     "button": "ANA SAYFAYA DÖN"
+  },
+  "videos": {
+    "sleep_with_piano_cello": "Cem Altun tarafından bestelendi. Kalbin yumuşayabileceği, zihnin yavaşlayabileceği ve gecenin biraz daha hafif hissedebileceği nazik bir alan. Uykusuz saatler, sessiz hisler ve karanlıkta teselli arayan herkes için bir yoldaş.",
+    "yuksek_yuksek": "Geleneksel Anadolu türküsünün güçlü bir orkestral yeniden yorumlanması. Bu sinematik senfonik düzenleme, özlem, mesafe ve hafıza hikayesini derinden duygusal bir konser deneyimine dönüştürür.",
+    "live_performance": "Orijinal kompozisyonları ve düzenlemeleri sergileyen samimi bir canlı performans."
   }
 }

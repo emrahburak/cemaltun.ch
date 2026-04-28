@@ -70,5 +70,10 @@
     "heading": "Seite nicht gefunden",
     "description": "Der von Ihnen gesuchte Inhalt wurde stattdessen verschoben, gelöscht oder die Adresse hat sich geändert. Bitte kehren Sie zur Startseite zurück.",
     "button": "ZUR STARTSEITE"
+  },
+  "videos": {
+    "sleep_with_piano_cello": "Komponiert von Cem Altun. Ein zarter Raum, in dem das Herz weicher werden kann, der Geist langsamer wird und die Nacht sich etwas weniger schwer anfühlt. Ein Begleiter für schlaflose Stunden, stille Gefühle und alle, die im Dunkeln nach Trost suchen.",
+    "yuksek_yuksek": "Eine kraftvolle orchestrale Neuinterpretation des traditionellen anatolischen Volksliedes. Diese filmische symphonische Arrangement verwandelt eine Geschichte von Sehnsucht, Distanz und Erinnerung in ein zutiefst emotionales Konzerterlebnis.",
+    "live_performance": "Eine intime Live-Performance mit originalen Kompositionen und Arrangements."
   }
 }
