@@ -9,8 +9,8 @@ import Hero from "../components/Hero";
 import Sidebar from "../components/Sidebar";
 import DesktopWorks from "../components/DesktopWorks";
 import MobileWorks from "../components/MobileWorks";
-import DesktopConcert from "../components/DesktopConcert";
-import MobileConcert from "../components/MobileConcert";
+import DesktopVideos from "../components/DesktopVideos";
+import MobileVideos from "../components/MobileVideos";
 import Contact from "../components/Contact";
 import GallerySlide from "../components/GallerySlide";
 import MobileGallerySlide from "../components/MobileGallerySlide";
@@ -32,7 +32,7 @@ const Home = () => {
   const currentIndex = useRef(0); // GSAP'in takibi için (Ref her zaman güncel kalır)
   const animating = useRef(false);
   const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const sectionIds = ["hero", "about", "works", "concert", "gallery", "contact"];
+  const sectionIds = ["hero", "about", "works", "videos", "gallery", "contact"];
 
   // --- ANA GEÇİŞ FONKSİYONU ---
   const gotoSection = (index: number, direction: number) => {
@@ -146,13 +146,13 @@ const Home = () => {
         </div>
       </div>
 
-      {/* 3: Concert */}
-      <div ref={el => { sectionsRef.current[3] = el; }} className={`absolute inset-0 overflow-hidden ${activeIndex === 3 ? "pointer-events-auto" : "pointer-events-none"}`} id="concert">
+      {/* 3: Videos */}
+      <div ref={el => { sectionsRef.current[3] = el; }} className={`absolute inset-0 overflow-hidden ${activeIndex === 3 ? "pointer-events-auto" : "pointer-events-none"}`} id="videos">
         <div className="w-full h-full lg:block hidden">
-          <DesktopConcert active={activeIndex === 3} />
+          <DesktopVideos active={activeIndex === 3} />
         </div>
         <div className="w-full h-full lg:hidden block">
-          <MobileConcert active={activeIndex === 3} />
+          <MobileVideos active={activeIndex === 3} />
         </div>
       </div>
 

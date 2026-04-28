@@ -20,6 +20,7 @@ const Sidebar = () => {
     { id: 'home', path: '/#hero' },
     { id: 'about', path: '/#about' },
     { id: 'works', path: '/#works' },
+    { id: 'videos', path: '/#videos' },
     { id: 'gallery', path: '/#gallery' },
     { id: 'contact', path: '/#contact' },
   ];
