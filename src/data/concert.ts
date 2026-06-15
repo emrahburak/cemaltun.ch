@@ -23,5 +23,17 @@ export const concertVideos: ConcertVideo[] = [
     embedId: "SNj59A6lHTM",
     title: "Live Performance",
     descriptionKey: "videos.live_performance"
+  },
+  {
+    id: "izmir-marsi",
+    embedId: "8z5NGX3eTNE",
+    title: "İzmir Marşı | Epic Philharmonic Orchestra Arrangement",
+    descriptionKey: "videos.izmir_marsi"
+  },
+  {
+    id: "breath-between-shadows",
+    embedId: "sjsClCtRifA",
+    title: "Breath Between Shadows",
+    descriptionKey: "videos.breath_between_shadows"
   }
 ];
