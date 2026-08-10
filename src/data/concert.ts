@@ -35,5 +35,11 @@ export const concertVideos: ConcertVideo[] = [
     embedId: "sjsClCtRifA",
     title: "Breath Between Shadows",
     descriptionKey: "videos.breath_between_shadows"
+  },
+  {
+    id: "kesanli-ali-destani",
+    embedId: "x9X5hv6HoeY",
+    title: "Keşanlı Ali Destanı – Yalçın Tura",
+    descriptionKey: "videos.kesanli_ali_destani"
   }
 ];
