@@ -7,6 +7,12 @@ export interface ConcertVideo {
 
 export const concertVideos: ConcertVideo[] = [
   {
+    id: "athenas-grace",
+    embedId: "Kkhunr7QUJQ",
+    title: "Athena's Grace | Elegy for Piano & Cello",
+    descriptionKey: "videos.athenas_grace"
+  },
+  {
     id: "sen-buradasin",
     embedId: "WTYdgLMkvNI",
     title: "Sen Buradasın | 30 August Victory Day",
