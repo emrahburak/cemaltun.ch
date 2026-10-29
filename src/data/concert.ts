@@ -32,8 +32,8 @@ export const concertVideos: ConcertVideo[] = [
   },
   {
     id: "breath-between-shadows",
-    embedId: "sjsClCtRifA",
-    title: "Breath Between Shadows",
+    embedId: "lB-MqZ9KANM",
+    title: "Breath Between Shadows | Piano Trilogy",
     descriptionKey: "videos.breath_between_shadows"
   },
   {
