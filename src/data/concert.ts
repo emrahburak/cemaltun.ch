@@ -7,6 +7,12 @@ export interface ConcertVideo {
 
 export const concertVideos: ConcertVideo[] = [
   {
+    id: "orda-bir-koy-var-uzakta",
+    embedId: "7YCAEP-V-gs",
+    title: "Orda Bir Köy Var Uzakta | String Chamber Orchestra",
+    descriptionKey: "videos.orda_bir_koy_var_uzakta"
+  },
+  {
     id: "athenas-grace",
     embedId: "Kkhunr7QUJQ",
     title: "Athena's Grace | Elegy for Piano & Cello",
