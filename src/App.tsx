@@ -2,6 +2,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Privacy from './pages/privacy';
+import About from './pages/About';
+import Contact from './pages/Contact';
 import ScrollToTop from './utils/ScrollTop';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
@@ -35,6 +37,9 @@ function App() {
 
           {/* Gizlilik Sayfası */}
           <Route path="/privacy" element={<Privacy />} />
+
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
 
           {/* Olmayan bir sayfaya girilirse ana sayfaya atabiliriz veya 404 yapabiliriz */}
           <Route path="*" element={<NotFound />} />
