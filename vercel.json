@@ -1,8 +1,18 @@
 {
   "rewrites": [
     {
+      "source": "/",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/api/markdown-home"
+    },
+    {
       "source": "/(.*)",
-      "destination": "/index.html"
-    }
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/api/not-found?path=$1"
+    },
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/privacy", "destination": "/index.html" },
+    { "source": "/about", "destination": "/index.html" },
+    { "source": "/contact", "destination": "/index.html" }
   ]
 }

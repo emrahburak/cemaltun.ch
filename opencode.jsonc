@@ -1,0 +1,52 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "opencode-google-antigravity-auth"
+  ],
+  "provider": {
+    "opencode-go": {
+      "baseURL": "https://api.opencode.ai/v1",
+      "type": "openai-compatible",
+      "options": {
+        "apiKey": "{file:~/.keys/opencode-go-key}"
+      }
+    },
+    "openrouter": {
+      "baseURL": "https://openrouter.ai/api/v1",
+      "type": "openai-compatible",
+      "options": {
+        "apiKey": "{file:~/.keys/openrouter-key}"
+      }
+    }
+  },
+  "agent": {
+    "OpenAgent": {
+      "tools": {
+        "tavily-mcp_*": true
+      }
+    },
+    "ExternalScout": {
+      "tools": {
+        "tavily-mcp_*": true
+      }
+    },
+    "OpenCoder": {
+      "tools": {
+        "tavily-mcp_*": true
+      }
+    }
+    },
+  "mcp": {
+
+  },
+  "tools": {
+    "downsub-mcp_*": false,
+    "coolify-mcp_*": false,
+    "exa-mcp_*": false,
+    "tavily-mcp_*": false
+  },
+  "tool_output": {
+    "max_lines": 50000,
+    "max_bytes": 1000000
+  }
+}
