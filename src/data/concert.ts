@@ -7,6 +7,12 @@ export interface ConcertVideo {
 
 export const concertVideos: ConcertVideo[] = [
   {
+    id: "adagio-g-minor",
+    embedId: "enyfURAbQns",
+    title: "Adagio in G minor – Melancholic Violin Adagio",
+    descriptionKey: "videos.adagio_g_minor"
+  },
+  {
     id: "orda-bir-koy-var-uzakta",
     embedId: "7YCAEP-V-gs",
     title: "Orda Bir Köy Var Uzakta | String Chamber Orchestra",
